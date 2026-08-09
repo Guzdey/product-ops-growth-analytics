@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=75,<82", "wheel>=0.45,<1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "product-ops-growth-analytics"
+version = "0.1.0"
+description = "Retailrocket user-growth operations analytics portfolio built with DuckDB, Python, and Streamlit."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "duckdb==1.5.5",
+  "pandas==3.0.5",
+  "pyarrow==24.0.0",
+  "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dashboard = [
+  "plotly==6.9.0",
+  "streamlit==1.61.1",
+]
+statistics = [
+  "scipy==1.18.0",
+  "statsmodels==0.14.6",
+]
+dev = [
+  "pytest==9.1.1",
+  "ruff==0.16.2",
+  "sqlfluff==4.3.0",
+]
+
+[project.scripts]
+product-ops = "product_ops.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests", "app"]
+extend-exclude = ["outputs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["product_ops"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

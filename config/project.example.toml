@@ -1,0 +1,33 @@
+[project]
+name = "product-ops-growth-analytics"
+demo_mode = false
+analysis_timezone = "UTC"
+session_gap_minutes = 30
+synthetic_seed = 20260809
+
+[dataset]
+name = "Retailrocket ecommerce dataset"
+official_source_url = "https://www.kaggle.com/datasets/retailrocket/ecommerce-dataset"
+license = "CC BY-NC-SA 4.0"
+# The official complete Retailrocket download is the only production analysis source.
+# Future repository data fixtures must be synthetic and are exclusively for tests.
+
+[paths]
+data_home = 'D:\CodexData\product-ops-growth-analytics'
+raw_data_dir = 'D:\CodexData\product-ops-growth-analytics\raw\extracted'
+warehouse_directory = 'D:\CodexData\product-ops-growth-analytics\warehouse'
+database_path = 'D:\CodexData\product-ops-growth-analytics\warehouse\product_ops.duckdb'
+parquet_directory = 'D:\CodexData\product-ops-growth-analytics\parquet'
+temp_directory = 'D:\CodexData\product-ops-growth-analytics\tmp'
+export_directory = 'D:\CodexData\product-ops-growth-analytics\exports'
+
+[dataset.files]
+events = "events.csv"
+item_properties_part1 = "item_properties_part1.csv"
+item_properties_part2 = "item_properties_part2.csv"
+category_tree = "category_tree.csv"
+
+[warehouse]
+schemas = ["meta", "raw", "stg", "core", "mart"]
+threads = 4
+memory_limit = "4GB"

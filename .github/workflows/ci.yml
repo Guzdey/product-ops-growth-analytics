@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Python 3.12 quality gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: "1"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements-dev.txt
+
+      - name: Install development dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Verify dependency consistency
+        run: python -m pip check
+
+      - name: Reject large data and sensitive files
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import subprocess
+          from pathlib import Path, PurePosixPath
+
+          max_bytes = 5 * 1024 * 1024
+          allowed_data_roots = (PurePosixPath("tests/fixtures"), PurePosixPath("demo_data"))
+          blocked_data_suffixes = {
+              ".7z", ".arrow", ".csv", ".db", ".duckdb", ".feather", ".gz",
+              ".parquet", ".rar", ".sqlite", ".sqlite3", ".tsv", ".xls", ".xlsx", ".zip",
+          }
+          blocked_secret_suffixes = {".key", ".p12", ".pem", ".pfx"}
+          blocked_names = {
+              "credentials.json", "id_ed25519", "id_rsa", "kaggle.json", "service-account.json",
+          }
+          blocked_top_level_directories = {
+              "data", "datasets", "exports", "outputs", "parquet", "raw", "tmp", "warehouse",
+          }
+
+          tracked = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          violations: list[str] = []
+
+          for raw_path in filter(None, tracked):
+              path = PurePosixPath(raw_path)
+              disk_path = Path(raw_path)
+              lower_parts = tuple(part.lower() for part in path.parts)
+              lower_name = path.name.lower()
+              suffix = path.suffix.lower()
+              top_level = lower_parts[0] if lower_parts else ""
+              allowed_small_data = any(
+                  path == root or root in path.parents for root in allowed_data_roots
+              )
+
+              if disk_path.stat().st_size > max_bytes:
+                  violations.append(f"oversized tracked file (>5 MiB): {raw_path}")
+
+              if lower_name == ".env" or (
+                  lower_name.startswith(".env.") and lower_name != ".env.example"
+              ):
+                  violations.append(f"environment secret path: {raw_path}")
+              if lower_name in blocked_names:
+                  violations.append(f"credential path: {raw_path}")
+              if path == PurePosixPath(".streamlit/secrets.toml"):
+                  violations.append(f"Streamlit secret path: {raw_path}")
+              if suffix in blocked_secret_suffixes:
+                  violations.append(f"private key/certificate path: {raw_path}")
+              if (
+                  suffix == ".json"
+                  and any(token in lower_name for token in ("credential", "secret", "token"))
+              ):
+                  violations.append(f"possible JSON credential path: {raw_path}")
+              if not allowed_small_data and (
+                  suffix in blocked_data_suffixes
+                  or lower_name.endswith(".duckdb.wal")
+                  or top_level in blocked_top_level_directories
+              ):
+                  violations.append(f"full/generated data path: {raw_path}")
+
+          if violations:
+              raise SystemExit("\n".join(sorted(set(violations))))
+
+          print(f"Checked {len(tracked) - 1} tracked files; no large data or secret paths found.")
+          PY
+
+      - name: Lint Python
+        run: python -m ruff check src tests app
+
+      - name: Run unit tests without production data
+        run: python -m pytest
+
+      - name: Lint DuckDB SQL
+        run: python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
+
+      - name: Smoke-test CLI commands
+        shell: bash
+        run: |
+          python -m product_ops --help
+          for command in ingest build metrics validate export run-all; do
+            python -m product_ops "$command" \
+              --config config/project.example.toml \
+              --json
+          done
