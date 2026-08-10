@@ -13,6 +13,8 @@
 - 建立 `meta/raw/stg/core/mart` SQL 占位目录、Streamlit 安全入口与 Pytest 契约测试。
 - 建立 Ruff、SQLFluff、严格 `.gitignore` 和 GitHub Actions 质量门禁配置。
 - 在 D 盘建立隔离的 Python 3.12 开发环境；本地 `pip check`、30 个 Pytest、Ruff、SQLFluff、六命令 CLI 与 Streamlit AppTest 全部通过。
+- 创建公开 GitHub 仓库并分别推送空 `main` 与 `feat/v0.1-foundation`；Draft PR #1 已创建但尚未合并。
+- GitHub Actions Run `31350600784` 已在提交 `72a4a22` 上通过；远程 `Python 3.12 quality gate` 覆盖依赖一致性、数据与凭证守卫、Ruff、30 个 Pytest（含 Streamlit AppTest）、SQLFluff 和六命令 CLI 冒烟测试。
 
 ### Fixed
 
@@ -20,10 +22,10 @@
 - 修正 CI 大文件守卫对合法 `sql/raw/` 分层目录的误判，只拦截仓库顶层数据目录。
 - 将 SQLFluff 规则放入显式 `.sqlfluff`，确保本地与 CI 不读取用户级配置且仍执行仓库规则。
 
-### Planned for v0.1.0
+### `v0.1.0` 剩余事项
 
-- GitHub Actions 首次运行并获得绿色 CI。
-- 公共 GitHub 仓库、Pull Request、`v0.1.0` 标签和 Release。
+- 合并 Draft PR #1，并验证合并后 `main` 的 GitHub Actions。
+- 创建并验证 `v0.1.0` 标签和 GitHub Release。
 
 ## Roadmap
 
