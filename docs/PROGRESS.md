@@ -1,18 +1,18 @@
 # 项目进度
 
-最后更新：2026-08-10
+最后更新：2026-08-11
 
 ## 当前状态
 
-**当前里程碑：`v0.1.0` — Draft PR #1 已建立，首次 GitHub CI 已通过**
+**当前里程碑：`v0.1.0` — PR #1 与合并后 `main` CI 已完成，等待标签和 Release**
 
-本文件记录可由当前工作区或外部状态验证的进度。未完成 PR 合并、合并后 `main` CI、标签和 Release 前，不得将 `v0.1.0` 标记为完成。
+本文件记录可由当前工作区或外部状态验证的进度。`v0.1.0` 标签、GitHub Release 和发布后最终证据尚未完成，因此不得将 `v0.1.0` 标记为完成。
 
 ## 里程碑看板
 
 | 版本 | 状态 | 当前证据 | 完成门槛 |
 |---|---|---|---|
-| `v0.1.0` | **进行中** | 公共仓库、Draft PR #1 与绿色 GitHub CI 已存在；本地依赖检查、30 个测试、Ruff、SQLFluff、六命令 CLI 和 Streamlit AppTest 均通过 | PR 已合并；合并后 `main` CI 通过；`v0.1.0` Release 存在 |
+| `v0.1.0` | **进行中** | PR #1 已 squash 合并至受保护的 `main`；合并提交 `30961a8` 的 Run `31469402516` 已通过；本地 30 个测试、Ruff、SQLFluff、六命令 CLI 和 Streamlit AppTest 均通过 | `v0.1.0` 标签和 GitHub Release 存在；最终发布证据已记录 |
 | `v0.2.0` | 未开始 | D 盘全量原始 CSV 已存在 | 全量 DuckDB 分层仓库及数据质量验收 |
 | `v0.3.0` | 未开始 | 指标口径模板已建立 | 自动指标、精确测试和真实假设检验 |
 | `v0.4.0` | 未开始 | 页面信息架构已写入总计划 | Streamlit、三条真实故事和运营策略 |
@@ -60,9 +60,12 @@
 - [x] 完成 Ruff、Pytest、SQLFluff、六命令 CLI 和 Streamlit smoke test。
 - [x] 完成严格 `.gitignore` 并验证大型文件/凭证不被跟踪。
 - [x] 完成 GitHub Actions 首次运行并获得绿色 CI。
-- [x] 经授权完成 Git 仓库、远程公共仓库、分支推送与 Draft PR #1。
-- [ ] 经授权合并 PR，并验证合并后 `main` CI。
-- [ ] 经授权创建 `v0.1.0` 标签和 GitHub Release。
+- [x] 经授权完成 Git 仓库、公开仓库、分支推送与 Draft PR #1。
+- [x] PR #1 已 squash 合并，并验证合并后 `main` Run `31469402516` 成功。
+- [x] `main` classic protection rule `81577593` 已启用并验证。
+- [ ] 经授权创建并推送 `v0.1.0` 标签。
+- [ ] 经授权发布并验证 GitHub Release。
+- [ ] 完成发布后最终证据更新并关闭 Goal 1。
 
 ## 当前风险与控制
 
@@ -70,9 +73,16 @@
 - **数据解释**：匿名商品属性不能解释为价格、品牌或名称；仅 `categoryid`、`available` 有明确语义。
 - **许可**：代码 MIT 与数据 CC BY-NC-SA 4.0 分开；GitHub 不重新分发全量数据。
 - **结果真实性**：尚未完成全量指标，README 和简历不得出现业务提升数字。
-- **外部状态**：所有文档 stage、commit、push 以及后续 PR 状态变更、merge、tag 和 Release 均按动作单独授权；已完成的建仓、push、PR 与 CI 均以远端状态验证。
+- **外部状态**：创建标签、推送标签、发布 Release，以及最终证据文档的 stage、commit、push 和 PR 均按动作单独授权；已完成的 PR 合并、`main` CI 和分支保护均以远端状态验证。
 
 ## 最新检查点
+
+### 2026-08-11 合并与分支保护检查点
+
+- [PR #1](https://github.com/Guzdey/product-ops-growth-analytics/pull/1) 已 squash 合并到 `main`；合并提交为 [`30961a8`](https://github.com/Guzdey/product-ops-growth-analytics/commit/30961a85642898e3da6b9a242cd745ea5eb3cef2)。
+- 合并后 [GitHub Actions Run `31469402516`](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/31469402516) 已成功完成 `Python 3.12 quality gate`，用时 46 秒。
+- `main` 已启用 classic protection rule `81577593`：要求 Pull Request、`Python 3.12 quality gate` 和线性历史，不允许 bypass，并禁止 force push 与分支删除。
+- 当前尚无 `v0.1.0` 标签或 GitHub Release；里程碑继续保持“进行中”。
 
 ### 2026-08-10 远程发布检查点
 
@@ -109,10 +119,11 @@
 
 ## 下一步
 
-1. 保持 Draft PR #1 的最新证据提交 CI 全绿并完成最终审阅。
-2. 单独请求将 PR 标记为 ready、合并并验证合并后 `main` CI。
-3. 依次单独请求创建与推送 `v0.1.0` 标签、发布 GitHub Release，并完成最终证据审计。
-4. `v0.1.0` Release 与最终绿色 CI 均存在后，再更新发布状态并启动 Goal 2。
+1. 通过 release-prep PR 合并本轮文档，并验证其合并后 `main` CI。
+2. 分别请求创建和推送 `v0.1.0` 标签；标签必须指向 release-prep 合并后的最终 `main` 提交。
+3. 单独请求发布 GitHub Release，并验证版本、标签、Release Notes 与许可说明。
+4. 发布完成后通过最终证据 PR 更新 README、CHANGELOG 和本进度文件。
+5. 最终证据合并且 `main` CI 通过后，才将 Goal 1 标记为完成；Goal 2 此前保持“未开始”。
 
 ## 更新格式
 
