@@ -126,12 +126,13 @@ python -m product_ops.cli run-all
 - 最小测试、lint 和 CI 通过。
 - 配置正确指向 D 盘，C 盘不产生大型数据和临时文件。
 - Git 未跟踪原始数据、数据库、凭证和大型产物。
-- 公共 GitHub 仓库、`v0.1.0` 标签和 Release 存在。
+- Goal 1 Pull Request 已合并至受保护的 `main`，合并后的 GitHub Actions 通过。
+- 公共 GitHub 仓库、`v0.1.0` 标签和 GitHub Release 存在。
 - README 记录安装、路径、验证和下一里程碑。
 
 ### 用户评审/授权点
 
-安装依赖、GitHub 登录、创建公共仓库、stage、commit、push、PR、merge、tag 和 Release 分别展示范围并单独授权。
+安装依赖、GitHub 登录、创建公共仓库、创建或修改分支保护、stage、commit、push、PR、merge、tag 和 Release，分别展示范围并单独授权。
 
 ## 4. Goal 2 / v0.2.0：全量 DuckDB 数据仓库
 
