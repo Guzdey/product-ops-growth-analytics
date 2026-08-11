@@ -1,0 +1,2 @@
+# Runtime environment. Dependency bounds are maintained in pyproject.toml.
+-e .[dashboard,statistics]

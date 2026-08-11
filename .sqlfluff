@@ -1,0 +1,9 @@
+[sqlfluff]
+dialect = duckdb
+templater = raw
+max_line_length = 100
+
+[sqlfluff:indentation]
+indented_joins = False
+indented_using_on = True
+template_blocks_indent = True

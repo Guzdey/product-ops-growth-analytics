@@ -1,0 +1,80 @@
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments and local package metadata
+.venv/
+venv/
+env/
+*.egg-info/
+build/
+dist/
+
+# Local configuration, credentials, and secrets
+.env
+.env.*
+!.env.example
+/config/project.toml
+**/kaggle.json
+**/*credentials*.json
+**/*credential*.json
+**/*secret*.json
+**/*token*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Full Retailrocket data and regenerable analytical artefacts
+/raw/
+/data/
+/datasets/
+/warehouse/
+/parquet/
+/tmp/
+/exports/
+/outputs/
+*.zip
+*.7z
+*.rar
+*.gz
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.arrow
+*.duckdb
+*.duckdb.wal
+*.db
+*.sqlite
+*.sqlite3
+*.xlsx
+*.xls
+
+# Small, synthetic test fixtures and public demo data are allowed explicitly.
+!/tests/fixtures/**/*.csv
+!/tests/fixtures/**/*.tsv
+!/tests/fixtures/**/*.parquet
+!/demo_data/**/*.csv
+!/demo_data/**/*.tsv
+!/demo_data/**/*.parquet
+
+# Streamlit and notebooks
+.streamlit/secrets.toml
+.ipynb_checkpoints/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
