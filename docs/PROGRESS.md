@@ -1,18 +1,18 @@
 # 项目进度
 
-最后更新：2026-08-11
+最后更新：2026-08-12
 
 ## 当前状态
 
-**当前里程碑：`v0.1.0` — PR #1 与合并后 `main` CI 已完成，等待标签和 Release**
+**当前里程碑：`v0.1.0` — 已完成；`v0.2.0` 尚未开始**
 
-本文件记录可由当前工作区或外部状态验证的进度。`v0.1.0` 标签、GitHub Release 和发布后最终证据尚未完成，因此不得将 `v0.1.0` 标记为完成。
+本文件记录可由当前工作区或外部状态验证的进度。`v0.1.0` 的项目骨架、受保护 `main`、绿色 CI、注释标签和正式 GitHub Release 均已完成并验证；本次文档更新用于把已成立的发布事实同步到公开仓库，不新增自指式完成门槛。
 
 ## 里程碑看板
 
 | 版本 | 状态 | 当前证据 | 完成门槛 |
 |---|---|---|---|
-| `v0.1.0` | **进行中** | PR #1 已 squash 合并至受保护的 `main`；合并提交 `30961a8` 的 Run `31469402516` 已通过；本地 30 个测试、Ruff、SQLFluff、六命令 CLI 和 Streamlit AppTest 均通过 | `v0.1.0` 标签和 GitHub Release 存在；最终发布证据已记录 |
+| `v0.1.0` | **已完成** | PR #2 已合入受保护的 `main`；最终提交 `9b97914` 的 Run `31498578803` 已通过；注释标签和正式 Release 均已验证 | 已满足 |
 | `v0.2.0` | 未开始 | D 盘全量原始 CSV 已存在 | 全量 DuckDB 分层仓库及数据质量验收 |
 | `v0.3.0` | 未开始 | 指标口径模板已建立 | 自动指标、精确测试和真实假设检验 |
 | `v0.4.0` | 未开始 | 页面信息架构已写入总计划 | Streamlit、三条真实故事和运营策略 |
@@ -63,9 +63,10 @@
 - [x] 经授权完成 Git 仓库、公开仓库、分支推送与 Draft PR #1。
 - [x] PR #1 已 squash 合并，并验证合并后 `main` Run `31469402516` 成功。
 - [x] `main` classic protection rule `81577593` 已启用并验证。
-- [ ] 经授权创建并推送 `v0.1.0` 标签。
-- [ ] 经授权发布并验证 GitHub Release。
-- [ ] 完成发布后最终证据更新并关闭 Goal 1。
+- [x] 经授权创建并推送 `v0.1.0` 注释标签；标签对象 `d63ec1d` 指向提交 `9b97914`。
+- [x] 经授权发布并验证正式 GitHub Release；非 Draft、非 Prerelease，且没有上传附件。
+- [x] 在 `docs/v0.1-final-evidence` 分支完成发布后最终证据更新。
+- [x] 依据 `docs/PROJECT_PLAN.md` 的验收条件完成逐项审计并关闭 Goal 1。
 
 ## 当前风险与控制
 
@@ -73,9 +74,19 @@
 - **数据解释**：匿名商品属性不能解释为价格、品牌或名称；仅 `categoryid`、`available` 有明确语义。
 - **许可**：代码 MIT 与数据 CC BY-NC-SA 4.0 分开；GitHub 不重新分发全量数据。
 - **结果真实性**：尚未完成全量指标，README 和简历不得出现业务提升数字。
-- **外部状态**：创建标签、推送标签、发布 Release，以及最终证据文档的 stage、commit、push 和 PR 均按动作单独授权；已完成的 PR 合并、`main` CI 和分支保护均以远端状态验证。
+- **外部状态**：标签和 Release 已按授权完成；本次发布后证据文档的 stage、commit、push、PR 与 merge 继续按动作单独授权，远端状态均在操作后验证，但这些交付后动作不改写已完成版本的标签目标。
 
 ## 最新检查点
+
+### 2026-08-12 正式发布检查点
+
+- [PR #2](https://github.com/Guzdey/product-ops-growth-analytics/pull/2) 已 squash 合并到受保护的 `main`；最终发布提交为 [`9b97914`](https://github.com/Guzdey/product-ops-growth-analytics/commit/9b979140c40f955f9a42eb7b72782c0e7de0c14b)，提交作者使用 GitHub noreply 邮箱。
+- 最终发布提交的 [GitHub Actions Run `31498578803`](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/31498578803) 状态为 Success：总耗时 51 秒，`Python 3.12 quality gate` 作业耗时 46 秒。
+- 注释标签 `v0.1.0` 的标签对象为 `d63ec1d6b9860ad3aa30cf1760911770d59b1f1e`，最终解析到提交 `9b979140c40f955f9a42eb7b72782c0e7de0c14b`。
+- 正式 Release [`v0.1.0 — 项目地基 / Project Foundation`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0) 已于北京时间 2026-08-12 00:27:03 发布（Release ID `368703879`）；仓库公开，`draft=false`、`prerelease=false`。
+- Release `assets=[]`，没有上传数据集或其他附件；GitHub 仅自动提供源码 ZIP/TAR。正文明确 foundation-only、验证证据、数据不重新分发和 MIT / CC BY-NC-SA 4.0 许可边界。
+- 完整原始数据仍位于 `D:\CodexData\product-ops-growth-analytics\raw\extracted`，四个 CSV 的当前大小与既有记录一致；`tools/`、`outputs/` 和原始数据均未删除、移动或覆盖。
+- 当前使用短生命周期分支 `docs/v0.1-final-evidence` 把已验证的发布事实同步到公开文档；该分支不会改写 `v0.1.0` 标签或 Release 内容。
 
 ### 2026-08-11 合并与分支保护检查点
 
@@ -119,11 +130,9 @@
 
 ## 下一步
 
-1. 通过 release-prep PR 合并本轮文档，并验证其合并后 `main` CI。
-2. 分别请求创建和推送 `v0.1.0` 标签；标签必须指向 release-prep 合并后的最终 `main` 提交。
-3. 单独请求发布 GitHub Release，并验证版本、标签、Release Notes 与许可说明。
-4. 发布完成后通过最终证据 PR 更新 README、CHANGELOG 和本进度文件。
-5. 最终证据合并且 `main` CI 通过后，才将 Goal 1 标记为完成；Goal 2 此前保持“未开始”。
+1. 分别请求 stage、commit、push 和 Draft PR 授权，只发布 README、CHANGELOG 与本进度文件。
+2. PR CI 通过后转为 Ready，并单独请求 squash merge 授权；合并后验证 `main` CI，作为公开文档交付证据。
+3. 用户确认进入下一阶段后，为 `v0.2.0` 创建独立 Codex Goal；在此之前 Goal 2 保持“未开始”。
 
 ## 更新格式
 
