@@ -2,13 +2,13 @@
 
 基于 Retailrocket 真实电商行为数据的用户增长运营分析作品集：使用 DuckDB SQL 管理全量 CSV，使用 Python 自动重算指标，并通过 Streamlit 展示漏斗、留存、生命周期分群和品类机会。
 
-> 当前状态：`v0.1.0` 项目地基已于 2026-08-11 通过
-> [PR #1](https://github.com/Guzdey/product-ops-growth-analytics/pull/1)
-> squash 合并到 `main`
->（提交 [`30961a8`](https://github.com/Guzdey/product-ops-growth-analytics/commit/30961a85642898e3da6b9a242cd745ea5eb3cef2)）。
-> 合并后的 [GitHub Actions Run `31469402516`](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/31469402516)
-> 已在 46 秒内成功完成 `Python 3.12 quality gate`。当前处于发布准备阶段，
-> `v0.1.0` 标签和 GitHub Release 尚未创建；正式业务结论将在全量数据仓库和指标测试完成后发布，
+> 当前状态：[`v0.1.0 — 项目地基 / Project Foundation`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)
+> 已于北京时间 2026-08-12 正式发布。注释标签 `v0.1.0` 指向受保护 `main` 的提交
+> [`9b97914`](https://github.com/Guzdey/product-ops-growth-analytics/commit/9b979140c40f955f9a42eb7b72782c0e7de0c14b)，
+> 对应 [PR #2](https://github.com/Guzdey/product-ops-growth-analytics/pull/2) 的 squash 合并结果。
+> 最终发布提交的 [GitHub Actions Run `31498578803`](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/31498578803)
+> 成功完成：总耗时 51 秒，`Python 3.12 quality gate` 作业耗时 46 秒。
+> 本版仅为工程地基，不含全量数据仓库、正式运营指标或业务看板；正式业务结论将在后续里程碑完成，
 > 本页不预填未经验证的提升数字。
 
 ## 项目要回答的问题
