@@ -1,4 +1,9 @@
 # `core` layer
 
-Goal 2 will define reusable event, session, transaction, item-property history,
-and category-tree entities here. The current SQL file is a marker only.
+`001_build_core.sql` defines reusable entities:
+
+- event and 30-minute session facts;
+- one row per distinct `transactionid`;
+- generic item-property history and typed category/availability histories;
+- event-time ASOF item context, which prevents future leakage;
+- recursive anonymous category depth, root, path, cycle, and orphan flags.

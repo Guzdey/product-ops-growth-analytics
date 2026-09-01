@@ -10,9 +10,8 @@
 e-commerce behavioral data into governed metrics, user segments, operational actions, and
 testable growth hypotheses.
 
-> **当前状态：** [`v0.1.0 — Project Foundation`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)
-> 已完成并发布。目前已具备项目结构、数据契约、指标字典、CLI、测试和 CI；
-> 全量数据仓库、正式指标和完整看板尚未实现。
+> **当前状态：** `v0.2.0 — Full DuckDB Warehouse` 已在本地通过全量数据验收，
+> GitHub PR、CI、标签和 Release 尚待发布。正式运营指标与完整看板将在后续版本实现。
 
 ## 项目概览
 
@@ -43,9 +42,9 @@ testable growth hypotheses.
 
 | 状态 | 内容 |
 |---|---|
-| 已完成 | 工程地基、分析框架、数据契约、指标字典、CLI 接口、测试与 CI |
-| 下一步 | 导入全量 CSV，建设 `meta/raw/stg/core/mart` 五层 DuckDB 数据仓库 |
-| 后续计划 | 在真实数据上实现指标、看板、运营洞察与验证方案 |
+| 已完成 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型；质量门禁 |
+| 下一步 | 建设 SQL 指标集市，并由 Python 自动计算漏斗、留存、复购、分群和品类指标 |
+| 后续计划 | Streamlit 看板、真实运营故事、独立模拟实验和公开部署 |
 
 ## 数据与边界
 
@@ -85,7 +84,7 @@ flowchart LR
 
 SQL 是指标公式的唯一来源，Python 不重复维护第二套指标口径。
 
-## 当前版本运行
+## 本地运行
 
 要求 Python 3.12。安装依赖：
 
@@ -99,13 +98,28 @@ python -m pip install -r requirements-dev.txt
 python -m product_ops --help
 ```
 
-启动当前占位页面：
+从官方完整 CSV 构建并验证数据仓库：
+
+```powershell
+python -m product_ops.cli ingest --config config\project.example.toml
+python -m product_ops.cli build --config config\project.example.toml
+python -m product_ops.cli validate --config config\project.example.toml --json
+```
+
+也可以依次执行全部步骤：
+
+```powershell
+python -m product_ops.cli run-all --config config\project.example.toml --json
+```
+
+启动当前项目页面：
 
 ```powershell
 python -m streamlit run app/streamlit_app.py
 ```
 
-> `v0.1.0` 的 CLI 和页面是安全占位接口，不读取全量 CSV，也不生成正式指标。
+数据库和完整质量报告写入 D 盘数据目录，不进入 GitHub。当前页面只展示项目阶段说明，
+不会直接扫描完整 CSV；正式指标和业务图表将在 `v0.3.0`、`v0.4.0` 增加。
 
 运行验证：
 
@@ -119,6 +133,8 @@ python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
 ## 文档与许可
 
 - [数据契约](docs/DATA_CONTRACT.md)：字段、表关系和质量规则；
+- [数据仓库使用说明](docs/WAREHOUSE_GUIDE.md)：技术联动、执行命令和关键口径；
+- [`v0.2.0` 全量数据质量摘要](docs/V0.2_QUALITY_REPORT.md)：行数、异常、性能和局限；
 - [运营指标字典](docs/METRIC_DICTIONARY.md)：指标公式、粒度和限制；
 - [项目计划](docs/PROJECT_PLAN.md)与[当前进度](docs/PROGRESS.md)；
 - [`v0.1.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)；
