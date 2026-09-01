@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-**当前里程碑：`v0.2.0` 本地全量验收通过，待 GitHub 发布。**
+**当前里程碑：`v0.2.0` Release Candidate，待标签与 GitHub Release。**
 
 第二部分已经把四个官方完整 CSV 建设为可重复执行的 DuckDB 分层数据仓库。
 这代表“数据底座可信”，还不代表漏斗、留存或复购结论已经产出；正式运营指标属于
@@ -15,7 +15,7 @@
 | 版本 | 状态 | 当前证据 |
 |---|---|---|
 | `v0.1.0` | 已发布 | [GitHub Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)、受保护 `main`、绿色 CI |
-| `v0.2.0` | 本地验收通过，待发布 | 全量建库、15 项质量检查、幂等重建和确定性测试通过 |
+| `v0.2.0` | Release Candidate | 全量验收、PR #5、受保护 `main` 合并及合并后 CI 均通过 |
 | `v0.3.0` | 未开始 | Python 自动运营指标引擎 |
 | `v0.4.0` | 未开始 | Streamlit 看板与真实运营故事 |
 | `v0.5.0` | 未开始 | 独立模拟渠道与 A/B 实验 |
@@ -37,6 +37,10 @@
 - [x] 连续两次全量构建结果一致，第二次复用全部已成功步骤。
 - [x] 确定性 Fixture 覆盖 29/30/31 分钟、多商品订单、ASOF、防未来泄漏、
   分类路径、幂等性和异常恢复。
+- [x] [PR #5](https://github.com/Guzdey/product-ops-growth-analytics/pull/5) 已 Squash 合并；
+  `main` 提交为 `343faf629fdf3c4f395d7f5f5e3f7ccbae001102`。
+- [x] 合并后 [CI Run 33499570428](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/33499570428)
+  成功完成，用时 1 分钟。
 
 ## 全量验收摘要
 
@@ -60,16 +64,16 @@
 
 - 数据没有金额、渠道、成本和实验分组，不能计算真实 GMV、AOV、CAC、ROAS 或 LTV。
 - 除 `categoryid`、`available` 外，商品属性不可解释为价格、品牌或商品名。
-- `v0.2.0` 尚未发布到 GitHub；在 PR、CI、合并、标签和 Release 完成前，版本状态保持
-  “本地验收通过”。
+- `v0.2.0` 的代码、PR 和 CI 已完成，但标签与 GitHub Release 尚未创建；完成前版本状态
+  保持 Release Candidate。
 - 完整 CSV、DuckDB 和质量 JSON 只保存在 D 盘，不进入公开仓库。
 - 工作区中用户自己的 `.gitignore` 修改和四个 `.lsf` 文件不属于本里程碑，未纳入发布范围。
 
 ## 下一步
 
-1. 审阅准确文件范围后，分别请求创建功能分支、stage、commit、push、PR、merge、tag 和
-   Release 授权。
-2. `v0.2.0` 发布完成后再开始 `v0.3.0`，用 SQL/Python 计算正式运营指标。
+1. 通过发布准备 PR 将本文件、README 与 CHANGELOG 合入受保护的 `main`。
+2. 经单独授权创建并推送 `v0.2.0` 注释标签，再创建无数据附件的 GitHub Release。
+3. `v0.2.0` 发布完成后再开始 `v0.3.0`，用 SQL/Python 计算正式运营指标。
 
 ## 这一阶段需要会讲的内容
 

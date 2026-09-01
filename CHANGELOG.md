@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-01
+
 ### Added
 
 - 将 `ingest`、`build`、`validate` 和 `run-all` 从安全占位接口实现为可执行的
@@ -65,11 +67,12 @@
 
 ## Roadmap
 
-- `v0.2.0`：全量 DuckDB 数据仓库。
+- `v0.2.0`：全量 DuckDB 数据仓库（已完成）。
 - `v0.3.0`：Python 自动运营指标引擎。
 - `v0.4.0`：Streamlit 看板与真实业务故事。
 - `v0.5.0`：独立模拟渠道与 A/B 实验模块。
 - `v1.0.0`：在线演示与求职作品集。
 
-[Unreleased]: https://github.com/Guzdey/product-ops-growth-analytics/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Guzdey/product-ops-growth-analytics/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0
