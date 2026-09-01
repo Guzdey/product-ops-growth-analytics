@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-**当前里程碑：`v0.2.0` Release Candidate，待标签与 GitHub Release。**
+**当前里程碑：`v0.2.0` 已正式发布；下一里程碑为 `v0.3.0` 自动运营指标。**
 
 第二部分已经把四个官方完整 CSV 建设为可重复执行的 DuckDB 分层数据仓库。
 这代表“数据底座可信”，还不代表漏斗、留存或复购结论已经产出；正式运营指标属于
@@ -15,7 +15,7 @@
 | 版本 | 状态 | 当前证据 |
 |---|---|---|
 | `v0.1.0` | 已发布 | [GitHub Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)、受保护 `main`、绿色 CI |
-| `v0.2.0` | Release Candidate | 全量验收、PR #5、受保护 `main` 合并及合并后 CI 均通过 |
+| `v0.2.0` | 已发布 | [GitHub Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)、PR #5、PR #6、受保护 `main`、绿色 CI |
 | `v0.3.0` | 未开始 | Python 自动运营指标引擎 |
 | `v0.4.0` | 未开始 | Streamlit 看板与真实运营故事 |
 | `v0.5.0` | 未开始 | 独立模拟渠道与 A/B 实验 |
@@ -41,6 +41,12 @@
   `main` 提交为 `343faf629fdf3c4f395d7f5f5e3f7ccbae001102`。
 - [x] 合并后 [CI Run 33499570428](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/33499570428)
   成功完成，用时 1 分钟。
+- [x] [PR #6](https://github.com/Guzdey/product-ops-growth-analytics/pull/6) 已 Squash 合并；
+  发布提交为 `e99cdd293064d89fe7fb7698dcd962614f6e3d52`。
+- [x] 最终 [CI Run 33505012015](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/33505012015)
+  成功完成，用时约 49 秒。
+- [x] 注释标签 `v0.2.0` 已推送，并发布无自定义数据附件的
+  [GitHub Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)。
 
 ## 全量验收摘要
 
@@ -64,16 +70,15 @@
 
 - 数据没有金额、渠道、成本和实验分组，不能计算真实 GMV、AOV、CAC、ROAS 或 LTV。
 - 除 `categoryid`、`available` 外，商品属性不可解释为价格、品牌或商品名。
-- `v0.2.0` 的代码、PR 和 CI 已完成，但标签与 GitHub Release 尚未创建；完成前版本状态
-  保持 Release Candidate。
+- `v0.2.0` 标签固定指向 `e99cdd293064d89fe7fb7698dcd962614f6e3d52`；Release
+  不包含完整数据、DuckDB、Parquet 或其他自定义数据附件。
 - 完整 CSV、DuckDB 和质量 JSON 只保存在 D 盘，不进入公开仓库。
-- 工作区中用户自己的 `.gitignore` 修改和四个 `.lsf` 文件不属于本里程碑，未纳入发布范围。
 
 ## 下一步
 
-1. 通过发布准备 PR 将本文件、README 与 CHANGELOG 合入受保护的 `main`。
-2. 经单独授权创建并推送 `v0.2.0` 注释标签，再创建无数据附件的 GitHub Release。
-3. `v0.2.0` 发布完成后再开始 `v0.3.0`，用 SQL/Python 计算正式运营指标。
+1. 创建 `v0.3.0` 功能分支，冻结活跃、漏斗、留存、复购、生命周期和品类指标口径。
+2. 使用 SQL 建设指标 Mart，由 Python 编排计算、质量检查和聚合结果导出。
+3. 使用确定性 Fixture 验证指标边界，全量验收通过后再发起 PR 和版本发布。
 
 ## 这一阶段需要会讲的内容
 
