@@ -10,8 +10,10 @@
 e-commerce behavioral data into governed metrics, user segments, operational actions, and
 testable growth hypotheses.
 
-> **当前状态：** `v0.2.0 — Full DuckDB Warehouse` 已在本地通过全量数据验收，
-> GitHub PR、CI、标签和 Release 尚待发布。正式运营指标与完整看板将在后续版本实现。
+> **当前状态：** `v0.2.0 — Full DuckDB Warehouse` 已通过全量数据验收；
+> [PR #5](https://github.com/Guzdey/product-ops-growth-analytics/pull/5) 已合入受保护的
+> `main`，合并后 CI 已通过。目前待创建版本标签和 Release，正式运营指标与完整看板
+> 将在后续版本实现。
 
 ## 项目概览
 
