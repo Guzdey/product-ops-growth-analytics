@@ -10,10 +10,9 @@
 e-commerce behavioral data into governed metrics, user segments, operational actions, and
 testable growth hypotheses.
 
-> **当前状态：** `v0.2.0 — Full DuckDB Warehouse` 已通过全量数据验收；
-> [PR #5](https://github.com/Guzdey/product-ops-growth-analytics/pull/5) 已合入受保护的
-> `main`，合并后 CI 已通过。目前待创建版本标签和 Release，正式运营指标与完整看板
-> 将在后续版本实现。
+> **当前状态：** [`v0.2.0 — Full DuckDB Warehouse`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)
+> 已正式发布。全量数据仓库验收、受保护 `main` 合并及合并后 CI 均已通过；正式运营
+> 指标与完整看板将在后续版本实现。
 
 ## 项目概览
 
@@ -139,5 +138,6 @@ python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
 - [`v0.2.0` 全量数据质量摘要](docs/V0.2_QUALITY_REPORT.md)：行数、异常、性能和局限；
 - [运营指标字典](docs/METRIC_DICTIONARY.md)：指标公式、粒度和限制；
 - [项目计划](docs/PROJECT_PLAN.md)与[当前进度](docs/PROGRESS.md)；
+- [`v0.2.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)；
 - [`v0.1.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.1.0)；
 - 原创代码采用 [MIT License](LICENSE)，Retailrocket 数据不属于 MIT 授权范围。
