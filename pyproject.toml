@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "product-ops-growth-analytics"
-version = "0.1.0"
+version = "0.2.0"
 description = "Retailrocket user-growth operations analytics portfolio built with DuckDB, Python, and Streamlit."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
@@ -12,6 +12,7 @@ dependencies = [
   "duckdb==1.5.5",
   "pandas==3.0.5",
   "pyarrow==24.0.0",
+  "pytz==2025.2",
   "PyYAML==6.0.3",
 ]
 

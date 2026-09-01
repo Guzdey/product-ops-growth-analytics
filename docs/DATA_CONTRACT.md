@@ -98,6 +98,8 @@ categoryid,parentid
 
 - `meta.source_file_manifest`：`source_id`、绝对/相对路径、bytes、SHA-256、mtime、预期/实际行数、导入时间、代码提交号。
 - `meta.pipeline_run`：运行 ID、命令、开始/结束时间、状态、输入 Hash、代码提交号和错误摘要。
+- `meta.model_build_step`：每个 SQL 建模步骤的顺序、目标表、SQL Hash、构建签名、状态、行数和错误摘要。
+- `meta.quality_check`：质量检查名称、严重度、状态、实际值、期望值和中文说明。
 
 ### `raw`
 
@@ -112,6 +114,7 @@ categoryid,parentid
 - `stg.events`：显式类型、`event_time_utc`、质量标记。
 - `stg.item_properties`：合并来源、属性时间、合法转换列。
 - `stg.category_tree`：分类键和结构质量标记。
+- `stg.item_property_value_stats`、`stg.item_property_timestamp_stats`：属性冲突与同时间点质量统计。
 
 ### `core`
 
@@ -119,6 +122,9 @@ categoryid,parentid
 - `core.fct_session`：一行一个访客会话。
 - `core.fct_transaction`：一行一个唯一交易。
 - `core.item_property_history`：商品属性有效时间区间。
+- `core.item_category_history`：商品分类属性的有效时间区间。
+- `core.item_availability_history`：商品可用状态属性的有效时间区间。
+- `core.fct_event_item_context`：事件发生时有效的分类和可用状态，不使用未来属性。
 - `core.dim_category`：分类父子、深度、根和匿名路径。
 
 ### `mart`

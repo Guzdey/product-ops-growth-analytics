@@ -27,8 +27,8 @@ def test_help_exits_successfully_without_optional_dependencies(
     assert "DuckDB" not in capsys.readouterr().err
 
 
-@pytest.mark.parametrize("command", COMMANDS)
-def test_commands_are_safe_full_dataset_placeholders(
+@pytest.mark.parametrize("command", ["metrics", "export"])
+def test_later_commands_are_safe_full_dataset_placeholders(
     command: str, capsys: pytest.CaptureFixture[str]
 ) -> None:
     exit_code = main([command, "--json"])
@@ -36,7 +36,7 @@ def test_commands_are_safe_full_dataset_placeholders(
     assert exit_code == 0
     result = json.loads(capsys.readouterr().out)
     assert result["command"] == command
-    assert result["status"] == "placeholder"
+    assert result["status"] == "planned"
     assert result["side_effects"] == "none"
     assert result["dataset_scope"] == "official-full-dataset"
     assert result["data_origin"] == "retailrocket"
@@ -67,6 +67,23 @@ def test_demo_mode_is_never_labelled_as_official_data(
     assert result["data_origin"] == "synthetic"
     assert result["required_files"] == []
     assert result["sample_is_default_input"] is False
+
+
+def test_implemented_command_reports_missing_source_files(
+    tmp_path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    config_path = tmp_path / "demo.json"
+    config_path.write_text(
+        json.dumps({"data_home": str(tmp_path / "data"), "demo_mode": True}),
+        encoding="utf-8",
+    )
+
+    exit_code = main(["ingest", "--config", str(config_path)])
+
+    assert exit_code == 2
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "Required source file is missing" in captured.err
 
 
 def test_config_error_returns_two_without_running_command(

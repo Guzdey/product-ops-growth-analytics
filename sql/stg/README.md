@@ -1,4 +1,6 @@
 # `stg` layer
 
-Goal 2 will apply explicit types, UTC timestamp interpretation, normalized event
-labels, and non-destructive quality flags here. The current SQL file is a marker.
+`001_stage_sources.sql` converts epoch milliseconds to UTC timestamps and adds
+non-destructive flags for exact duplicates, unknown events, missing required
+values, transaction-ID mismatches, invalid typed properties, and timestamp
+conflicts. Source rows remain present even when a flag is true.

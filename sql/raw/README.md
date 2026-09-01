@@ -1,4 +1,5 @@
 # `raw` layer
 
-Goal 2 will preserve every row and original field from the four official full
-Retailrocket CSV files here. The current SQL file is a marker only.
+`001_ingest.sql` reads the four official CSV files with explicit DuckDB types.
+It preserves every source row and adds only lineage columns. The two item
+property files are combined without dropping anonymous attributes.
