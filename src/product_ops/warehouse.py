@@ -1,4 +1,4 @@
-"""DuckDB ingestion, warehouse builds, and Goal 2 quality validation."""
+"""DuckDB ingestion, warehouse builds, and reusable quality validation."""
 
 from __future__ import annotations
 
@@ -242,19 +242,37 @@ def validate(config: ProjectConfig) -> dict[str, Any]:
 
 
 def run_all(config: ProjectConfig) -> dict[str, Any]:
-    """Rebuild Goal 2 from the official CSV files and validate the result."""
+    """Run the complete v0.3 pipeline from source ingestion through export."""
+
+    from product_ops.metrics import calculate_metrics, export_metrics
 
     ingest_result = ingest(config)
     build_result = build(config)
+    metrics_result = calculate_metrics(config)
     validation_result = validate(config)
+    if metrics_result["status"] == "failed" or validation_result["status"] == "failed":
+        return {
+            "milestone": "v0.3.0",
+            "command": "run-all",
+            "status": "failed",
+            "steps": {
+                "ingest": ingest_result,
+                "build": build_result,
+                "metrics": metrics_result,
+                "validate": validation_result,
+            },
+        }
+    export_result = export_metrics(config)
     return {
-        "milestone": "v0.2.0",
+        "milestone": "v0.3.0",
         "command": "run-all",
-        "status": validation_result["status"],
+        "status": "success",
         "steps": {
             "ingest": ingest_result,
             "build": build_result,
+            "metrics": metrics_result,
             "validate": validation_result,
+            "export": export_result,
         },
     }
 
@@ -466,15 +484,21 @@ def _execute_build_steps(
     pipeline_run_id: str,
     input_hash: str | None,
     session_gap_milliseconds: int,
+    sql_files: tuple[str, ...] = BUILD_SQL_FILES,
+    signature_namespace: str = "warehouse-v0.2.0",
 ) -> list[dict[str, Any]]:
     """Execute each parsed SQL statement in its own resumable transaction."""
 
     cumulative_signature = hashlib.sha256(
-        f"input:{input_hash or 'unknown'}\nsession_gap_ms:{session_gap_milliseconds}\n".encode()
+        (
+            f"namespace:{signature_namespace}\n"
+            f"input:{input_hash or 'unknown'}\n"
+            f"session_gap_ms:{session_gap_milliseconds}\n"
+        ).encode()
     ).hexdigest()
     step_order = 0
     results: list[dict[str, Any]] = []
-    for relative_path in BUILD_SQL_FILES:
+    for relative_path in sql_files:
         rendered = load_sql(
             relative_path,
             session_gap_milliseconds=session_gap_milliseconds,

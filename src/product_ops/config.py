@@ -1,9 +1,8 @@
 """Dependency-free project configuration and storage safety checks.
 
-Goal 1 deliberately performs no data ingestion.  This module only resolves and
-validates the paths that later milestones will use.  Keeping it in the standard
-library ensures that ``product-ops --help`` and the placeholder commands remain
-available before DuckDB, Streamlit, or PyYAML are installed.
+This module only resolves and validates project paths; it never ingests data by
+itself. Keeping it in the standard library ensures that ``product-ops --help``
+remains available before DuckDB, Streamlit, or PyYAML are installed.
 """
 
 from __future__ import annotations

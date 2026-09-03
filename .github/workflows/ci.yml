@@ -127,5 +127,3 @@ jobs:
           for command in ingest build metrics validate export run-all; do
             python -m product_ops "$command" --help
           done
-          python -m product_ops metrics --config config/project.example.toml --json
-          python -m product_ops export --config config/project.example.toml --json

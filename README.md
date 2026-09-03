@@ -11,8 +11,7 @@ e-commerce behavioral data into governed metrics, user segments, operational act
 testable growth hypotheses.
 
 > **当前状态：** [`v0.2.0 — Full DuckDB Warehouse`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)
-> 已正式发布。全量数据仓库验收、受保护 `main` 合并及合并后 CI 均已通过；正式运营
-> 指标与完整看板将在后续版本实现。
+> 已正式发布；`v0.3.0` 全量运营指标已在功能分支通过本地验收，等待 PR、CI 和正式发布。
 
 ## 项目概览
 
@@ -37,14 +36,15 @@ testable growth hypotheses.
 | 哪些品类值得优化？ | 浏览规模、品类转化率、同级基准 | 识别高流量但转化偏弱的品类 |
 | 运营动作是否有效？ | 核心指标、护栏指标和实验设计 | 验证策略效果，避免把相关性写成因果关系 |
 
-以上是分析框架，不是预设结论。正式发现只会在全量 SQL、质量检查和指标测试通过后发布。
+全量 SQL、指标质量检查和确定性测试已经通过；当前发现及解释边界见
+[`v0.3.0` 全量运营指标报告](docs/V0.3_METRICS_REPORT.md)。
 
 ## 实现范围与状态
 
 | 状态 | 内容 |
 |---|---|
-| 已完成 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型；质量门禁 |
-| 下一步 | 建设 SQL 指标集市，并由 Python 自动计算漏斗、留存、复购、分群和品类指标 |
+| 已发布 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型 |
+| 已完成待发布 | 31 项指标注册；活跃、漏斗、留存、复购、生命周期和品类 Mart；Python 自动计算与聚合导出 |
 | 后续计划 | Streamlit 看板、真实运营故事、独立模拟实验和公开部署 |
 
 ## 数据与边界
@@ -104,7 +104,9 @@ python -m product_ops --help
 ```powershell
 python -m product_ops.cli ingest --config config\project.example.toml
 python -m product_ops.cli build --config config\project.example.toml
+python -m product_ops.cli metrics --config config\project.example.toml --json
 python -m product_ops.cli validate --config config\project.example.toml --json
+python -m product_ops.cli export --config config\project.example.toml --json
 ```
 
 也可以依次执行全部步骤：
@@ -119,8 +121,8 @@ python -m product_ops.cli run-all --config config\project.example.toml --json
 python -m streamlit run app/streamlit_app.py
 ```
 
-数据库和完整质量报告写入 D 盘数据目录，不进入 GitHub。当前页面只展示项目阶段说明，
-不会直接扫描完整 CSV；正式指标和业务图表将在 `v0.3.0`、`v0.4.0` 增加。
+数据库、完整质量报告和聚合导出写入 D 盘数据目录，不进入 GitHub。当前页面仍只展示
+项目阶段说明，不会直接扫描完整 CSV；正式交互图表将在 `v0.4.0` 增加。
 
 运行验证：
 
@@ -136,6 +138,7 @@ python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
 - [数据契约](docs/DATA_CONTRACT.md)：字段、表关系和质量规则；
 - [数据仓库使用说明](docs/WAREHOUSE_GUIDE.md)：技术联动、执行命令和关键口径；
 - [`v0.2.0` 全量数据质量摘要](docs/V0.2_QUALITY_REPORT.md)：行数、异常、性能和局限；
+- [`v0.3.0` 全量运营指标报告](docs/V0.3_METRICS_REPORT.md)：漏斗、留存、复购、分群和假设检验；
 - [运营指标字典](docs/METRIC_DICTIONARY.md)：指标公式、粒度和限制；
 - [项目计划](docs/PROJECT_PLAN.md)与[当前进度](docs/PROGRESS.md)；
 - [`v0.2.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)；
