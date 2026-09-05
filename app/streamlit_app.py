@@ -1,4 +1,4 @@
-"""Safe Streamlit landing page while the analytical dashboard is planned."""
+"""Safe Streamlit landing page while the v0.4 dashboard is planned."""
 
 from __future__ import annotations
 
@@ -42,8 +42,8 @@ def main(streamlit_module: Any | None = None) -> int:
     )
     st.title("Retailrocket 用户增长运营分析")
     st.info(
-        "v0.2.0 已建设全量 DuckDB 数据仓库；运营指标与交互图表将在后续"
-        "里程碑实现。本页面目前仅展示项目状态，不会读取或写入数据。"
+        "v0.3.0 已完成全量 DuckDB 数据仓库和自动运营指标；交互图表将在 v0.4.0 "
+        "实现。本页面目前仅展示项目状态，不会读取或写入数据。"
     )
     st.subheader("模拟分析输入" if config.demo_mode else "正式分析输入")
     st.code(str(config.raw_data_dir), language=None)

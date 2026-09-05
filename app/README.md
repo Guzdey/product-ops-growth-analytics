@@ -1,8 +1,8 @@
 # Streamlit application
 
-`streamlit_app.py` is the safe `v0.1.0` landing page. It does not open the
-Retailrocket files or a DuckDB database. The analytical dashboard will be
-implemented after the warehouse and metric marts exist in later milestones.
+`streamlit_app.py` is a safe status landing page. It does not open the
+Retailrocket files or a DuckDB database. The `v0.3.0` warehouse and metric marts
+are complete; the interactive analytical dashboard belongs to `v0.4.0`.
 
 After installing the project dependencies, run it from the repository root:
 
