@@ -1,0 +1,4 @@
+anomaly_id,anomaly_count,reference_count,anomaly_rate,data_origin
+transaction_without_prior_view_session,1844,14297,0.12897810729523676,real
+transaction_without_prior_cart_session,3585,14297,0.25075190599426456,real
+cart_without_prior_view_session,7248,43760,0.16563071297989032,real

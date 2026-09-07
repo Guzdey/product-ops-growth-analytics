@@ -1,0 +1,6 @@
+lifecycle_segment,visitor_count,at_risk_visitor_count,visitor_share,at_risk_threshold_days,data_origin
+first_session_bounce,1203127,0,0.8547674006375622,9,real
+active_browser,165699,152162,0.1177216565817602,9,real
+cart_no_purchase,27004,8747,0.019185122507280387,9,real
+first_time_buyer,10656,9892,0.007570606778165449,9,real
+repeat_buyer,1063,915,0.0007552134952317824,9,real

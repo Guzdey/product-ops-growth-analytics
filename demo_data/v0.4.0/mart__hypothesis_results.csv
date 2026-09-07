@@ -1,0 +1,4 @@
+hypothesis_id,hypothesis_cn,metric_id,observed_effect,threshold,comparison_operator,is_supported,primary_success_count,primary_group_count,comparison_success_count,comparison_group_count,confidence_low_95,confidence_high_95,p_value,evidence_summary,data_origin
+H1,首次会话加购未购访客的 D7 留存率比仅浏览访客高至少 5 个百分点,retention_d7_segment_difference,0.006559566651759739,0.05,>=,false,267,22276,7204,1327577,0.0051250609732254706,0.007994072330294009,3.908433993387311e-39,D7 仅纳入可完整观察 Cohort；差异按访客数加权,real
+H2,严格有序漏斗中存在一个步骤贡献超过 60% 的流失会话,largest_ordered_funnel_loss_share,0.9852149166591213,0.60,>,true,1719202,1745002,,,,,,两步流失分别为浏览到加购、加购到购买，并除以严格漏斗总流失,real
+H3,至少一个高流量品类的转化率比同级基准低至少 2 个百分点,maximum_category_sibling_conversion_gap,0.0211870346397091,0.02,>=,true,11,982,,,0.006266162699800871,0.019946428168112908,,最高合格品类 categoryid=299；基准为同父级合格品类转化中位数,real

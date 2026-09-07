@@ -1,0 +1,11 @@
+metric_id,funnel_scope,numerator_count,denominator_count,metric_rate,dropoff_count,data_origin
+behavior_view_coverage,session,1755714,1761606,0.9966553247434443,5892,real
+behavior_cart_coverage,session,43760,1761606,0.024840968979442622,1717846,real
+behavior_transaction_coverage,session,14297,1761606,0.008115889705189469,1747309,real
+ordered_view_to_cart_rate,session,36512,1755714,0.020796097769910135,1719202,real
+ordered_cart_to_purchase_rate,session,10712,36512,0.2933829973707274,25800,real
+ordered_view_to_purchase_rate,session,12453,1755714,0.007092840861324794,1743261,real
+cart_abandonment_rate,session,31919,43760,0.7294104204753199,11841,real
+ordered_view_to_cart_rate,same_item_session,45075,2330696,0.019339716548189896,2285621,real
+ordered_cart_to_purchase_rate,same_item_session,14802,45075,0.32838602329450917,30273,real
+ordered_view_to_purchase_rate,same_item_session,17237,2330696,0.007395644906070976,2313459,real

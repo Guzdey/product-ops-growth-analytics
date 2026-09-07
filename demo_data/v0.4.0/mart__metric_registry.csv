@@ -1,0 +1,32 @@
+metric_id,metric_name_cn,business_question,formula_description,grain,window_definition,data_origin,limitations,status
+daily_active_visitors,日活访客 DAU,每天有多少活跃访客？,当日去重 visitorid,day,UTC calendar day,real,首次出现不等于注册,validated
+rolling_7d_active_visitors,滚动 7 日活跃访客,短周期活跃规模如何变化？,当日及前 6 日去重 visitorid,day,rolling 7 days,real,观察窗口开始阶段不足完整自然周期,validated
+rolling_30d_active_visitors,滚动 30 日活跃访客,中周期活跃规模如何变化？,当日及前 29 日去重 visitorid,day,rolling 30 days,real,观察窗口开始阶段不足完整自然周期,validated
+dau_mau_stickiness,DAU/MAU 活跃粘性,访客访问频率如何？,DAU / rolling 30-day active visitors,day,rolling 30 days,real,不是注册用户口径的产品粘性,validated
+first_observed_visitors,首次观察访客,观察窗口内每天出现多少新访客？,首个事件日期等于统计日的去重 visitorid,day,UTC calendar day,real,首次观察不等于注册,validated
+returning_visitors,回访访客,当日活跃中有多少此前已出现？,当日活跃且首个事件日期早于当日,day,UTC calendar day,real,只反映数据观察窗口,validated
+session_count,会话数,每天发生多少次访问会话？,30 分钟规则生成的唯一 session_id,day,UTC calendar day,real,相邻事件严格大于 30 分钟才开启新会话,validated
+events_per_session,每会话事件数,一次访问的交互深度如何？,会话内合格事件数的均值、中位数和 P75,day,session,real,排除已标记精确重复和非法事件,validated
+items_per_session,每会话商品数,一次访问探索多少不同商品？,会话内去重 itemid 的均值、中位数和 P75,day,session,real,无商品数量字段,validated
+session_duration_seconds,会话时长,访客一次决策过程持续多久？,最后事件时间减首个事件时间的中位数和 P75,day,session,real,单事件会话时长为 0,validated
+behavior_coverage_rate,行为覆盖率,多少会话发生过指定行为？,发生指定行为的会话 / 全部合格会话,period,observation window,real,描述覆盖，不代表有序转化,validated
+ordered_view_to_cart_rate,严格浏览到加购率,浏览后有多少会话继续加购？,严格后于浏览发生加购的会话 / 有浏览会话,period,session,real,要求事件时间严格递增,validated
+ordered_cart_to_purchase_rate,严格加购到购买率,有效加购后有多少会话购买？,严格后于有效加购发生交易的会话 / 有有效加购会话,period,session,real,交易数仍需按 transactionid 去重,validated
+ordered_view_to_purchase_rate,严格浏览到购买率,浏览后有多少会话最终购买？,严格后于浏览发生交易的会话 / 有浏览会话,period,session,real,不要求中间必须加购,validated
+same_item_funnel_rate,同商品严格漏斗,排除跨商品混合后转化如何？,同 session_id + itemid 内严格有序步骤转化,period,session_item,real,分母是会话商品组合,validated
+cart_abandonment_rate,购物车放弃率,加购后未购买的会话占比多少？,加购后无更晚交易的会话 / 有加购会话,period,session,real,不能识别站外购买,validated
+median_step_latency,漏斗步骤耗时,步骤之间通常需要多久？,严格匹配步骤时间差的中位数和 P75,period,session,real,只包含完成对应步骤的会话,validated
+retention_d1,D1 活跃留存,首日后第 1 天是否回来？,D1 活跃访客 / 可完整观察 D1 的 Cohort 访客,cohort,1 day,real,排除右截断 Cohort,validated
+retention_d3,D3 活跃留存,首日后第 3 天是否回来？,D3 活跃访客 / 可完整观察 D3 的 Cohort 访客,cohort,3 days,real,排除右截断 Cohort,validated
+retention_d7,D7 活跃留存,首日后第 7 天是否回来？,D7 活跃访客 / 可完整观察 D7 的 Cohort 访客,cohort,7 days,real,排除右截断 Cohort,validated
+retention_d14,D14 活跃留存,首日后第 14 天是否回来？,D14 活跃访客 / 可完整观察 D14 的 Cohort 访客,cohort,14 days,real,排除右截断 Cohort,validated
+retention_d30,D30 活跃留存,首日后第 30 天是否回来？,D30 活跃访客 / 可完整观察 D30 的 Cohort 访客,cohort,30 days,real,受数据观察窗口长度限制,validated
+purchasing_visitor_rate,购买访客率,活跃访客中有多少发生购买？,有交易的去重访客 / 活跃去重访客,period,observation window,real,没有金额字段,validated
+transaction_count,唯一交易数,观察窗口内有多少订单代理记录？,COUNT(DISTINCT transactionid),day_period,observation window,real,不等于交易事件行数,validated
+distinct_items_per_transaction,每交易不同商品数,一个交易包含多少不同商品？,每个 transactionid 的去重 itemid，汇总均值、中位数和 P75,transaction,observation window,real,不能推断购买数量,validated
+repeat_purchase_visitor_rate,复购访客率,购买访客中多少发生至少两次交易？,至少 2 个唯一交易的访客 / 至少 1 个唯一交易的访客,period,observation window,real,只覆盖数据观察窗口,validated
+repurchase_interval_days,复购间隔,二次购买触达时机如何？,同访客相邻唯一交易时间差的中位数和 P75,visitor,observation window,real,左右边界可能截断间隔,validated
+category_session_conversion_rate,品类会话转化率,品类浏览会话中多少发生同品类交易？,同品类有浏览且有交易的会话 / 品类浏览会话,category,observation window,real,属性按事件时点关联,validated
+category_opportunity_score,品类机会规模,哪些高流量品类转化低于同级？,"浏览会话数 × max(0, 同级转化中位数 - 当前转化率)",category,observation window,real,理论排序分，不等于可实现新增交易,validated
+item_property_coverage_rate,可解释属性覆盖率,事件时点能关联多少有效商品属性？,关联有效 categoryid 或 available 的事件 / 合格事件,period,observation window,real,匿名属性不做业务解释,validated
+category_linkage_rate,分类树关联率,有效商品分类能否连接分类树？,分类可连接 dim_category 的事件 / 有有效 categoryid 的事件,period,observation window,real,属性按事件时点关联,validated
