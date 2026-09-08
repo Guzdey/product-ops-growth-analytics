@@ -40,6 +40,7 @@ def test_snapshot_manifest_hashes_and_row_counts_match_files() -> None:
     assert len(manifest_files) == len(TABLE_FILES)
     for item in manifest_files:
         path = source.directory / item["path"]
+        assert b"\r\n" not in path.read_bytes()
         assert path.stat().st_size == item["bytes"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]
         assert len(tables[item["table"]]) == item["rows"]

@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -53,7 +52,9 @@ def build_snapshot(source: Path, output: Path) -> dict[str, object]:
         source_path = source / filename
         output_path = output / filename
         if table_name in FULL_COPY_TABLES:
-            shutil.copyfile(source_path, output_path)
+            source_bytes = source_path.read_bytes()
+            normalized_bytes = source_bytes.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+            output_path.write_bytes(normalized_bytes)
             frame = pd.read_csv(output_path)
             selection = "all aggregate rows"
         else:
@@ -74,7 +75,7 @@ def build_snapshot(source: Path, output: Path) -> dict[str, object]:
                     .sort_values("view_session_count", ascending=False)
                 )
                 selection = "top 250 items plus up to 50 items in focus category 299"
-            frame.to_csv(output_path, index=False)
+            frame.to_csv(output_path, index=False, lineterminator="\n")
 
         forbidden = {"visitorid", "transactionid", "session_id"}.intersection(frame.columns)
         if forbidden:
@@ -109,7 +110,9 @@ def build_snapshot(source: Path, output: Path) -> dict[str, object]:
         "files": generated_files,
     }
     (output / "dashboard_manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     return manifest
 
