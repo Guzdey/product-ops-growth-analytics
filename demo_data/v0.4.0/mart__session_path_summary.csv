@@ -1,0 +1,51 @@
+event_path,session_count,visitor_count,distinct_transaction_count,median_event_count,session_share,data_origin
+view,1374629,1166077,0,1.0,0.7803271560155903,real
+view > view,200033,183340,0,2.0,0.1135514978945348,real
+view > view > view,65500,61127,0,3.0,0.0371819805336721,real
+view > view > view > view,28458,26715,0,4.0,0.0161545771301868,real
+view > view > view > view > view,15617,14706,0,5.0,0.0088652059541123,real
+view > view > view > view > view > view,9250,8689,0,6.0,0.0052508903807094,real
+view > addtocart,8024,7842,0,2.0,0.004554934531331,real
+view > view > view > view > view > view > view,5723,5423,0,7.0,0.0032487400701405,real
+view > view > view > view > view > view > view > view,3931,3739,0,8.0,0.0022314864958452,real
+addtocart,3779,3693,0,1.0,0.0021452015944541,real
+view > view > view > view > view > view > view > view > view,2857,2679,0,9.0,0.001621815547858,real
+view > addtocart > transaction,2652,2577,2652,3.0,0.001505444463745,real
+view > addtocart > view,2445,2426,0,3.0,0.0013879380519821,real
+view > view > addtocart,2336,2316,0,3.0,0.0013260626950634,real
+view > view > view > view > view > view > view > view > view > view,1858,1756,0,10.0,0.0010547193867414,real
+view > view > view > view > view > view > view > view > view > view > view,1451,1367,0,11.0,0.0008236802099902,real
+view > view > view > view > view > view > view > view > view > view > view > view,1123,1079,0,12.0,0.0006374864754093,real
+view > view > addtocart > view,909,907,0,4.0,0.0005160064168718,real
+addtocart > view,858,852,0,2.0,0.0004870555617998,real
+view > view > addtocart > transaction,855,839,855,4.0,0.000485352570325,real
+view > view > view > addtocart,854,851,0,4.0,0.0004847849065,real
+view > view > view > view > view > view > view > view > view > view > view > view > view,835,798,0,13.0,0.0004739992938262,real
+view > addtocart > view > view,810,801,0,4.0,0.0004598076982026,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view,650,624,0,14.0,0.000368981486212,real
+addtocart > transaction,633,615,633,2.0,0.000359331201188,real
+view > transaction,584,577,584,2.0,0.0003315156737658,real
+transaction,535,523,535,1.0,0.0003037001463437,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view > view,515,494,0,15.0,0.0002923468698449,real
+view > addtocart > transaction > view,472,462,472,4.0,0.0002679373253724,real
+view > view > view > view > addtocart,423,422,0,5.0,0.0002401217979502,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view,421,399,0,16.0,0.0002389864703003,real
+addtocart > addtocart,395,392,0,2.0,0.0002242272108519,real
+view > view > view > addtocart > view,374,373,0,5.0,0.0002123062705281,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view,374,356,0,17.0,0.0002123062705281,real
+view > addtocart > addtocart,370,365,0,3.0,0.0002100356152283,real
+view > addtocart > view > view > view,363,360,0,5.0,0.0002060619684537,real
+view > view > addtocart > view > view,335,334,0,5.0,0.0001901673813554,real
+view > view > view > addtocart > transaction,334,330,334,5.0,0.0001895997175304,real
+view > addtocart > view > transaction,327,326,327,4.0,0.0001856260707558,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view,321,301,0,18.0,0.0001822200878062,real
+addtocart > view > view,272,271,0,3.0,0.0001544045603841,real
+view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view > view,234,226,0,19.0,0.0001328333350363,real
+view > addtocart > view > view > view > view,214,213,0,6.0,0.0001214800585374,real
+view > addtocart > addtocart > view,205,205,0,4.0,0.000116371084113,real
+view > view > view > view > view > addtocart,202,202,0,6.0,0.0001146680926381,real
+view > view > transaction,194,192,194,3.0,0.0001101267820386,real
+view > view > view > view > addtocart > view,192,192,0,6.0,0.0001089914543887,real
+view > view > view > view > addtocart > transaction,191,188,191,6.0,0.0001084237905638,real
+view > addtocart > view > addtocart,188,184,0,4.0,0.000106720799089,real
+view > view > addtocart > view > view > view,187,187,0,6.0,0.000106153135264,real

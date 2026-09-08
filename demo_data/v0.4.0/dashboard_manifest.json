@@ -1,0 +1,153 @@
+{
+  "milestone": "v0.4.0",
+  "generated_at_utc": "2026-09-08T04:00:08.890334+00:00",
+  "data_origin": "real",
+  "snapshot_kind": "public_aggregate_snapshot",
+  "source_milestone": "v0.3.0",
+  "source_run_id": "4b92c116-8616-4001-9b21-07e5c06068e9",
+  "contains_visitor_level_exports": false,
+  "contains_transaction_level_exports": false,
+  "limitations": [
+    "High-cardinality session paths and item rows are limited for public display.",
+    "All dashboard metrics remain aggregates calculated by the v0.3 SQL marts.",
+    "The snapshot is not a replacement for the official full Retailrocket CSV files."
+  ],
+  "files": [
+    {
+      "table": "daily_activity",
+      "path": "mart__daily_activity.csv",
+      "rows": 139,
+      "bytes": 14054,
+      "sha256": "ecf71a7c3419ee078faab9d56d2adff9624fcc2b4d5c2e49138aaad7aa0b8538",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "daily_session_metrics",
+      "path": "mart__daily_session_metrics.csv",
+      "rows": 139,
+      "bytes": 15223,
+      "sha256": "875ab8b08a87600ba17f48f9702a61536b07b220d8c090eaccfa233c417678ab",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "funnel_summary",
+      "path": "mart__funnel_summary.csv",
+      "rows": 10,
+      "bytes": 935,
+      "sha256": "c78bb6e5825aacb16cd7229ed8e7bb3fd8bf01fd0c810495e94d69ecc9716d91",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "funnel_latency_summary",
+      "path": "mart__funnel_latency_summary.csv",
+      "rows": 3,
+      "bytes": 212,
+      "sha256": "5807b5c9f404c8bf46440701d4f5da5331ab578d5780778573c4d8c03cd0625e",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "session_path_summary",
+      "path": "mart__session_path_summary.csv",
+      "rows": 50,
+      "bytes": 4359,
+      "sha256": "0a11030c32464cc7aafce6d4c2337595fde0fcecd5d3c575f8175f446f9af08f",
+      "selection": "top 50 paths by session_count"
+    },
+    {
+      "table": "funnel_anomaly_summary",
+      "path": "mart__funnel_anomaly_summary.csv",
+      "rows": 3,
+      "bytes": 284,
+      "sha256": "d40af99456fd4d1132a94a2b353db2bc5ff611a8dd625b5a8c1e0bf063b81276",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "retention_cohort_daily",
+      "path": "mart__retention_cohort_daily.csv",
+      "rows": 2780,
+      "bytes": 200735,
+      "sha256": "8e660633121246381cece50866c0481ce56053d02e373430321262670ccdcead",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "retention_summary",
+      "path": "mart__retention_summary.csv",
+      "rows": 20,
+      "bytes": 1284,
+      "sha256": "069889fa2e91fde7e88a731952be9a6ab38f00501e90c35d31db4ba585d8b781",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "retention_cohort_weekly",
+      "path": "mart__retention_cohort_weekly.csv",
+      "rows": 182,
+      "bytes": 8716,
+      "sha256": "3f366f79d383d827fcf54848ff880303ef23f5ab069cab4194eb5f938d63f761",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "transaction_daily",
+      "path": "mart__transaction_daily.csv",
+      "rows": 139,
+      "bytes": 7596,
+      "sha256": "b96db56ec01c9b5bf0d25c4cba06e95f218f8341817ca7d16bc27126e25c97f5",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "transaction_summary",
+      "path": "mart__transaction_summary.csv",
+      "rows": 1,
+      "bytes": 520,
+      "sha256": "c05c8c12af082b4da7f1c740c5dd833e29f208372e7a8349fd5bfa23991e3c1e",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "lifecycle_segment_summary",
+      "path": "mart__lifecycle_segment_summary.csv",
+      "rows": 5,
+      "bytes": 378,
+      "sha256": "20e4e558c5fc723b7a1598f56f23e5ff2117de5d3f0f21dc995fdaf4626a6a7f",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "item_performance",
+      "path": "mart__item_performance.csv",
+      "rows": 285,
+      "bytes": 15568,
+      "sha256": "47fa559d57af0a94421d0fc14e0a489ce6bc04a9b15c7936a44c2af3ddc92d38",
+      "selection": "top 250 items plus up to 50 items in focus category 299"
+    },
+    {
+      "table": "category_performance",
+      "path": "mart__category_performance.csv",
+      "rows": 1139,
+      "bytes": 159054,
+      "sha256": "c5691a887e0c812b43729b69c1431944651c0a28be1ca774cb4e3a20568467c3",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "data_quality_summary",
+      "path": "mart__data_quality_summary.csv",
+      "rows": 6,
+      "bytes": 464,
+      "sha256": "979e278eb225a5fdfa3e7374a24904118e4d0a10696695a5c2c56d5c168125ae",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "hypothesis_results",
+      "path": "mart__hypothesis_results.csv",
+      "rows": 3,
+      "bytes": 1122,
+      "sha256": "c5441f194ce020a27e78d11777915970c9ef5860b9b5d39f84212c2aa1d5d189",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "metric_registry",
+      "path": "mart__metric_registry.csv",
+      "rows": 31,
+      "bytes": 6324,
+      "sha256": "aba3b17efe62201d7ad7539bdd606bc27ac3066979574860d7a137c2638841f5",
+      "selection": "all aggregate rows"
+    }
+  ]
+}

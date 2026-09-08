@@ -1,0 +1,4 @@
+funnel_step,matched_session_count,median_latency_seconds,p75_latency_seconds,data_origin
+cart_to_transaction,10712,262.0,539.0,real
+view_to_cart,36512,124.0,418.0,real
+view_to_transaction,12453,577.0,1270.0,real

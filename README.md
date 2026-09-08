@@ -11,7 +11,7 @@ e-commerce behavioral data into governed metrics, user segments, operational act
 testable growth hypotheses.
 
 > **当前状态：** [`v0.2.0 — Full DuckDB Warehouse`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)
-> 已正式发布；`v0.3.0` 全量运营指标已在功能分支通过本地验收，等待 PR、CI 和正式发布。
+> 已正式发布；`v0.3.0` 指标代码已通过 PR #8 合入 `main`，`v0.4.0` 六页交互看板正在完成发布验收。
 
 ## 项目概览
 
@@ -26,6 +26,16 @@ testable growth hypotheses.
 ```text
 业务问题 → 数据口径 → SQL 指标 → 真实发现 → 用户分群 → 运营动作 → 实验验证
 ```
+
+## 真实发现与运营动作
+
+| 真实发现 | 当前判断 | 建议动作 |
+|---|---|---|
+| 浏览→加购贡献严格漏斗总流失的 98.52% | H2 达到预设门槛，是首要诊断环节 | 按品类、会话深度和时点可售状态拆分，实验验证具体页面方案 |
+| 加购未购人群 D7 留存仅比仅浏览高 0.656pp | H1 未达到 5pp 业务门槛 | 只做低成本、小流量召回测试，不把相关性写成召回收益 |
+| 匿名品类 299 转化率低同级中位数 2.119pp | H3 达到排查门槛，但分类缺少业务语义 | 先核查可售状态、路径和样本区间，再决定是否进入品类实验 |
+
+![Retailrocket 看板管理摘要](docs/assets/dashboard-overview.png)
 
 ## 运营场景
 
@@ -44,8 +54,9 @@ testable growth hypotheses.
 | 状态 | 内容 |
 |---|---|
 | 已发布 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型 |
-| 已完成待发布 | 31 项指标注册；活跃、漏斗、留存、复购、生命周期和品类 Mart；Python 自动计算与聚合导出 |
-| 后续计划 | Streamlit 看板、真实运营故事、独立模拟实验和公开部署 |
+| 已合入 `main` | 31 项指标注册；活跃、漏斗、留存、复购、生命周期和品类 Mart；Python 自动计算与聚合导出 |
+| 本地发布验收 | 六页 Streamlit/Plotly 看板、真实聚合快照、三条运营故事和逐页测试 |
+| 后续计划 | 独立模拟实验、公开部署和求职材料整理 |
 
 ## 数据与边界
 
@@ -115,14 +126,15 @@ python -m product_ops.cli export --config config\project.example.toml --json
 python -m product_ops.cli run-all --config config\project.example.toml --json
 ```
 
-启动当前项目页面：
+启动交互看板：
 
 ```powershell
 python -m streamlit run app/streamlit_app.py
 ```
 
-数据库、完整质量报告和聚合导出写入 D 盘数据目录，不进入 GitHub。当前页面仍只展示
-项目阶段说明，不会直接扫描完整 CSV；正式交互图表将在 `v0.4.0` 增加。
+本机存在 D 盘 `v0.3.0` 聚合导出时自动读取完整结果；否则读取仓库内约 427 KiB 的
+真实数据聚合快照。两种模式都不直接扫描原始 CSV，指标公式仍由 SQL 统一维护。筛选范围、
+页面说明和快照生成方式见 [`app/README.md`](app/README.md)。
 
 运行验证：
 
@@ -139,6 +151,7 @@ python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
 - [数据仓库使用说明](docs/WAREHOUSE_GUIDE.md)：技术联动、执行命令和关键口径；
 - [`v0.2.0` 全量数据质量摘要](docs/V0.2_QUALITY_REPORT.md)：行数、异常、性能和局限；
 - [`v0.3.0` 全量运营指标报告](docs/V0.3_METRICS_REPORT.md)：漏斗、留存、复购、分群和假设检验；
+- [`v0.4.0` 看板与运营闭环](docs/V0.4_DASHBOARD_REPORT.md)：六页看板、三条故事、动作和验证方案；
 - [运营指标字典](docs/METRIC_DICTIONARY.md)：指标公式、粒度和限制；
 - [项目计划](docs/PROJECT_PLAN.md)与[当前进度](docs/PROGRESS.md)；
 - [`v0.2.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)；

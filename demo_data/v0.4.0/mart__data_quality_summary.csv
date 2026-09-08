@@ -1,0 +1,7 @@
+metric_id,numerator_count,denominator_count,metric_rate,data_origin
+item_category_property_coverage_rate,2098377,2755183,0.7616107532603098,real
+item_availability_property_coverage_rate,2223466,2755183,0.8070120932076018,real
+item_property_coverage_rate,2314212,2755183,0.8399485624003923,real
+category_linkage_rate,2098377,2098377,1.0,real
+excluded_exact_duplicate_event_rate,918,2756101,0.00033307923040556205,real
+excluded_invalid_event_rate,0,2756101,0.0,real
