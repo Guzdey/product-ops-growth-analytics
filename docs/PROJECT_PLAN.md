@@ -99,7 +99,11 @@ python -m product_ops.cli metrics
 python -m product_ops.cli validate
 python -m product_ops.cli export
 python -m product_ops.cli run-all
+python -m product_ops.cli experiment
 ```
+
+前六个命令构成真实 Retailrocket 分析流水线；`experiment` 是完全独立的模拟数据入口，
+不会加入真实 `run-all`。
 
 ## 3. Goal 1 / v0.1.0：项目地基
 

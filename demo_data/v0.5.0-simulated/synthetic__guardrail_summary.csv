@@ -1,0 +1,5 @@
+scenario_id,experiment_group,converted_users,refunded_users,refund_rate,maximum_allowed_increase,seed,data_origin
+no_effect,control,800,40,0.05,0.01,20260809,synthetic
+no_effect,variant,800,40,0.05,0.01,20260809,synthetic
+positive_effect,control,800,40,0.05,0.01,20260809,synthetic
+positive_effect,variant,920,46,0.05,0.01,20260809,synthetic

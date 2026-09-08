@@ -83,19 +83,25 @@
 | `repeat_buyer` | 至少两个唯一交易 | 高价值维护与复购运营 | validated |
 | `at_risk` | 多会话或购买访客，距观察期末至少 9 日未活跃 | 独立风险标签；9 日来自回访间隔 P75 向上取整 | validated |
 
-## 5. 模拟数据指标（v0.5.0 后）
+## 5. 模拟数据指标（v0.5.0）
 
 以下指标不得出现在真实 Retailrocket 结果中：
 
 | `metric_id` | 中文名称 | 公式 | `data_origin` | 状态 |
 |---|---|---|---|---|
-| `click_through_rate` | 点击率 CTR | `clicks / impressions` | synthetic | planned |
-| `campaign_conversion_rate` | 活动转化率 CVR | `conversions / clicks`，并同时提供曝光口径 | synthetic | planned |
-| `customer_acquisition_cost` | 获客成本 CAC | `campaign_cost / acquired_customers` | synthetic | planned |
-| `return_on_ad_spend` | 广告支出回报 ROAS | `attributed_revenue / campaign_cost` | synthetic | planned |
-| `gross_merchandise_value` | 模拟 GMV | 模拟订单金额之和 | synthetic | planned |
-| `average_order_value` | 模拟客单价 AOV | `simulated_gmv / distinct_transaction_count` | synthetic | planned |
-| `absolute_uplift` | 绝对提升 | `treatment_rate - control_rate` | synthetic | planned |
-| `relative_uplift` | 相对提升 | `(treatment_rate-control_rate)/control_rate` | synthetic | planned |
+| `ctr` | 点击率 CTR | `clicks / impressions` | synthetic | validated |
+| `click_cvr` | 点击后转化率 CVR | `conversions / clicks` | synthetic | validated |
+| `assignment_cvr` | 分组用户转化率 | `converted_users / assigned_users`，实验主指标 | synthetic | validated |
+| `cac` | 获客成本 CAC | `spend / conversions` | synthetic | validated |
+| `roas` | 广告支出回报 ROAS | `simulated_gmv / spend` | synthetic | validated |
+| `simulated_gmv` | 模拟 GMV | 模拟订单金额之和 | synthetic | validated |
+| `simulated_aov` | 模拟客单价 AOV | `simulated_gmv / simulated_orders` | synthetic | validated |
+| `refund_rate` | 退款率护栏 | `refunded_users / converted_users` | synthetic | validated |
+| `absolute_lift` | 绝对提升 | `variant_rate - control_rate` | synthetic | validated |
+| `relative_lift` | 相对提升 | `(variant_rate-control_rate)/control_rate` | synthetic | validated |
 
-实验必须同时报告样本量、效应大小、95% 置信区间、p 值和护栏指标；统计显著不自动等于业务值得上线。
+`absolute_lift` 和 `relative_lift` 由 Python 统计步骤写入
+`synthetic.experiment_results`。实验同时报告
+样本量、效应大小、95% 置信区间、双侧 p 值和退款率护栏；统计显著不自动等于业务值得
+上线。当前最低样本门槛为每组 10,000，显著性水平为 0.05，退款率实验组相对对照组最多
+上升 1 个百分点。

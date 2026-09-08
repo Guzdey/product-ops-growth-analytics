@@ -124,6 +124,6 @@ jobs:
         shell: bash
         run: |
           python -m product_ops --help
-          for command in ingest build metrics validate export run-all; do
+          for command in ingest build metrics validate export run-all experiment; do
             python -m product_ops "$command" --help
           done

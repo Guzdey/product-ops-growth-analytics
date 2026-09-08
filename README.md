@@ -10,8 +10,8 @@
 e-commerce behavioral data into governed metrics, user segments, operational actions, and
 testable growth hypotheses.
 
-> **当前状态：** [`v0.2.0 — Full DuckDB Warehouse`](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)
-> 已正式发布；`v0.3.0` 指标代码已通过 PR #8 合入 `main`，`v0.4.0` 六页交互看板正在完成发布验收。
+> **当前状态：** `v0.4.0` 六页真实数据看板已通过 PR #9 合入 `main`；`v0.5.0`
+> 独立模拟渠道与 A/B 实验模块正在本地验收。GitHub 正式 Release 目前到 `v0.2.0`。
 
 ## 项目概览
 
@@ -21,7 +21,7 @@ testable growth hypotheses.
 | 数据规模 | 2,756,101 条行为事件、20,275,902 条商品属性历史、1,669 条分类关系 |
 | 核心问题 | 漏斗流失、首访质量、留存、复购、生命周期分群和品类机会 |
 | 分析方法 | 会话化、严格有序漏斗、Cohort、时态属性关联和数据质量检查 |
-| 技术栈 | DuckDB SQL、Python 3.12、Streamlit、Plotly、Pytest、GitHub Actions |
+| 技术栈 | DuckDB SQL、Python 3.12、Streamlit、Plotly、统计检验、Pytest、GitHub Actions |
 
 ```text
 业务问题 → 数据口径 → SQL 指标 → 真实发现 → 用户分群 → 运营动作 → 实验验证
@@ -56,7 +56,8 @@ testable growth hypotheses.
 | 已发布 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型 |
 | 已合入 `main` | 31 项指标注册；活跃、漏斗、留存、复购、生命周期和品类 Mart；Python 自动计算与聚合导出 |
 | 本地发布验收 | 六页 Streamlit/Plotly 看板、真实聚合快照、三条运营故事和逐页测试 |
-| 后续计划 | 独立模拟实验、公开部署和求职材料整理 |
+| 本地开发 | 独立模拟渠道与 A/B 实验：CTR、CVR、CAC、ROAS、效应量、置信区间和 p 值 |
+| 后续计划 | 公开部署和求职材料整理 |
 
 ## 数据与边界
 
@@ -73,6 +74,7 @@ testable growth hypotheses.
 - 订单数使用唯一 `transactionid`，不能用交易事件行数代替；
 - 只有 `categoryid`、`available` 可以直接解释，其他商品属性保持匿名；
 - 数据没有真实金额、渠道成本或实验分组，因此不计算真实 GMV、AOV、CAC、ROAS 或 LTV；
+- 第七页的渠道、成本、金额和实验结果全部是独立模拟数据，不属于真实业务成果；
 - 仓库内教学样例只用于字段学习，不参与正式指标或业务结论。
 
 数据与衍生物遵循 [CC BY-NC-SA 4.0](docs/DATA_LICENSE.md)。
@@ -86,6 +88,8 @@ flowchart LR
     B --> D["SQL 指标集市"]
     D --> E["Streamlit / Plotly"]
     D --> F["聚合结果导出"]
+    I["独立模拟实验"] --> J["synthetic Schema"]
+    J --> E
     G["GitHub Actions"] --> H["测试 / PR / Release"]
 ```
 
@@ -126,14 +130,22 @@ python -m product_ops.cli export --config config\project.example.toml --json
 python -m product_ops.cli run-all --config config\project.example.toml --json
 ```
 
+独立生成并分析模拟渠道与 A/B 实验：
+
+```powershell
+python -m product_ops.cli experiment --config config\project.example.toml --json
+```
+
+该命令只重建 `synthetic` Schema 和 `v0.5.0-simulated` 聚合导出，不修改真实数据模型。
+
 启动交互看板：
 
 ```powershell
 python -m streamlit run app/streamlit_app.py
 ```
 
-本机存在 D 盘 `v0.3.0` 聚合导出时自动读取完整结果；否则读取仓库内约 427 KiB 的
-真实数据聚合快照。两种模式都不直接扫描原始 CSV，指标公式仍由 SQL 统一维护。筛选范围、
+本机存在 D 盘聚合导出时自动读取完整结果；否则读取仓库内真实数据快照和约 74 KiB 的
+模拟实验快照。两类来源在 Schema、文件和页面中隔离，且都不直接扫描原始 CSV。筛选范围、
 页面说明和快照生成方式见 [`app/README.md`](app/README.md)。
 
 运行验证：
@@ -152,6 +164,7 @@ python -m sqlfluff lint sql --ignore-local-config --config .sqlfluff
 - [`v0.2.0` 全量数据质量摘要](docs/V0.2_QUALITY_REPORT.md)：行数、异常、性能和局限；
 - [`v0.3.0` 全量运营指标报告](docs/V0.3_METRICS_REPORT.md)：漏斗、留存、复购、分群和假设检验；
 - [`v0.4.0` 看板与运营闭环](docs/V0.4_DASHBOARD_REPORT.md)：六页看板、三条故事、动作和验证方案；
+- [`v0.5.0` 模拟增长实验](docs/V0.5_SIMULATED_EXPERIMENT_REPORT.md)：渠道指标、A/B 检验和决策边界；
 - [运营指标字典](docs/METRIC_DICTIONARY.md)：指标公式、粒度和限制；
 - [项目计划](docs/PROJECT_PLAN.md)与[当前进度](docs/PROGRESS.md)；
 - [`v0.2.0` Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)；

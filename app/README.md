@@ -3,7 +3,7 @@
 `streamlit_app.py` 读取 SQL 已经计算完成的聚合指标，不扫描 Retailrocket 原始 CSV，也不在
 页面中重新定义指标公式。
 
-## 六个页面
+## 七个页面
 
 1. 管理摘要：核心 KPI、三项预登记假设和三条运营故事；
 2. 流量与活跃：DAU、滚动活跃、首次观察/回访结构、会话深度和交易趋势；
@@ -11,6 +11,7 @@
 4. 留存与生命周期：D1/D3/D7/D14/D30 留存、周 Cohort 热力图和生命周期分群；
 5. 商品与品类：匿名品类的流量、转化区间、同级差距和机会排序；
 6. 数据质量：属性覆盖、重复/非法事件和漏斗顺序异常。
+7. 模拟增长实验：独立展示渠道 CTR/CVR/CAC/ROAS、A/B 效应量、95% 区间和 p 值。
 
 每个业务页面按 `What / So What / Now What / How to Verify` 组织，区分数据发现、业务意义、
 运营动作和验证方法。
@@ -23,7 +24,8 @@
   真实聚合快照，只截取了高基数的路径与商品排行，不含访客级或交易级记录；
 - 可用 `PRODUCT_OPS_DASHBOARD_EXPORT_DIR` 指定另一份通过相同数据契约的聚合导出。
 
-桌面教学小样例不是看板输入。真实数据和后续 `v0.5.0` 模拟实验也不会混合计算。
+桌面教学小样例不是看板输入。模拟页优先读取 D 盘 `exports/v0.5.0-simulated`，否则读取
+`demo_data/v0.5.0-simulated`；所有表均标记 `data_origin='synthetic'`，不会与真实页混合。
 
 ## 启动
 
@@ -53,6 +55,7 @@ python -m streamlit run app/streamlit_app.py
 
 ```powershell
 python tools/build_dashboard_snapshot.py
+python tools/build_experiment_snapshot.py
 ```
 
 生成脚本会记录源运行 ID、选取规则、行数、大小与 SHA-256，并阻止访客 ID、交易 ID 或

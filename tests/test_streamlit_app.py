@@ -1,4 +1,4 @@
-"""Streamlit AppTest coverage for all six dashboard pages."""
+"""Streamlit AppTest coverage for six real pages and one simulated page."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ def test_streamlit_management_page_uses_real_aggregate_snapshot(monkeypatch) -> 
     assert not app.exception
     assert app.title[0].value == "Retailrocket 用户增长与产品运营分析"
     assert app.header[0].value == "01 管理摘要"
-    assert len(app.sidebar.radio[0].options) == 6
+    assert len(app.sidebar.radio[0].options) == 7
     rendered_info = " ".join(item.value for item in app.info)
     assert "公开聚合快照" in rendered_info
     assert "不含访客级或交易级记录" in rendered_info
@@ -38,6 +38,7 @@ def test_streamlit_all_pages_render_without_exceptions(monkeypatch) -> None:
         "04 留存与生命周期",
         "05 商品与品类",
         "06 数据质量",
+        "07 模拟增长实验 / SIMULATED",
     }
 
     for page in expected_headers:
@@ -61,3 +62,18 @@ def test_streamlit_filters_update_activity_and_retention(monkeypatch) -> None:
 
     assert not app.exception
     assert len(app.multiselect[0].options) == 4
+
+
+def test_simulated_experiment_page_keeps_origin_and_decision_visible(monkeypatch) -> None:
+    app = _start_app(monkeypatch)
+    app.sidebar.radio[0].set_value("07 模拟增长实验 / SIMULATED")
+    app.run(timeout=30)
+
+    assert not app.exception
+    assert any("全部渠道、成本、金额" in item.value for item in app.warning)
+    assert any(item.label == "绝对提升" and item.value == "0.00 个百分点" for item in app.metric)
+
+    app.selectbox[0].set_value("positive_effect")
+    app.run(timeout=30)
+    assert not app.exception
+    assert any(item.label == "绝对提升" and item.value == "1.20 个百分点" for item in app.metric)

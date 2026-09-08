@@ -1,0 +1,3 @@
+scenario_id,scenario_name_cn,metric_id,control_rate,variant_rate,absolute_lift,relative_lift,confidence_low,confidence_high,z_statistic,p_value,alpha,required_sample_per_arm,observed_min_sample_per_arm,sample_size_met,guardrail_passed,is_statistically_significant,decision,seed,data_origin
+no_effect,无效果场景,assignment_cvr,0.08,0.08,0.0,0.0,-0.007519725649291836,0.007519725649291836,0.0,1.0,0.05,10000,10000,true,true,false,do_not_roll_out_based_on_current_evidence,20260809,synthetic
+positive_effect,正向效果场景,assignment_cvr,0.08,0.092,0.011999999999999997,0.14999999999999997,0.0042306276106200665,0.019769372389379928,3.0265226240578715,0.002473843073820246,0.05,10000,10000,true,true,true,candidate_for_gradual_rollout,20260809,synthetic
