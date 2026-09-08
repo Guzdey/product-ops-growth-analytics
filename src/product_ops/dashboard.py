@@ -16,6 +16,9 @@ from typing import Any
 import pandas as pd
 
 DEFAULT_FULL_EXPORT_DIRECTORY = Path(r"D:\CodexData\product-ops-growth-analytics\exports\v0.3.0")
+DEFAULT_EXPERIMENT_EXPORT_DIRECTORY = Path(
+    r"D:\CodexData\product-ops-growth-analytics\exports\v0.5.0-simulated"
+)
 TABLE_FILES = {
     "daily_activity": "mart__daily_activity.csv",
     "daily_session_metrics": "mart__daily_session_metrics.csv",
@@ -34,6 +37,14 @@ TABLE_FILES = {
     "data_quality_summary": "mart__data_quality_summary.csv",
     "hypothesis_results": "mart__hypothesis_results.csv",
     "metric_registry": "mart__metric_registry.csv",
+}
+EXPERIMENT_TABLE_FILES = {
+    "metric_registry": "synthetic__metric_registry.csv",
+    "experiment_arm_metrics": "synthetic__experiment_arm_metrics.csv",
+    "experiment_results": "synthetic__experiment_results.csv",
+    "channel_daily_metrics": "synthetic__channel_daily_metrics.csv",
+    "channel_summary": "synthetic__channel_summary.csv",
+    "guardrail_summary": "synthetic__guardrail_summary.csv",
 }
 DATE_COLUMNS = {
     "daily_activity": ("activity_date",),
@@ -63,6 +74,12 @@ def bundled_snapshot_directory() -> Path:
     """Return the repository's small, visitor-safe real-data snapshot."""
 
     return Path(__file__).resolve().parents[2] / "demo_data" / "v0.4.0"
+
+
+def bundled_experiment_directory() -> Path:
+    """Return the repository's aggregate-only simulated experiment snapshot."""
+
+    return Path(__file__).resolve().parents[2] / "demo_data" / "v0.5.0-simulated"
 
 
 def resolve_dashboard_source(
@@ -126,6 +143,74 @@ def load_dashboard_tables(source: DashboardSource) -> dict[str, pd.DataFrame]:
         for column in DATE_COLUMNS.get(table_name, ()):
             if column in frame:
                 frame[column] = pd.to_datetime(frame[column], errors="raise").dt.date
+        tables[table_name] = frame
+    return tables
+
+
+def resolve_experiment_source(
+    export_directory: str | os.PathLike[str] | None = None,
+) -> DashboardSource:
+    """Resolve a synthetic-only aggregate source without touching real tables."""
+
+    explicit = export_directory or os.getenv("PRODUCT_OPS_EXPERIMENT_EXPORT_DIR")
+    candidates: list[tuple[Path, str, str]] = []
+    if explicit:
+        explicit_path = Path(explicit)
+        snapshot_path = bundled_experiment_directory()
+        if explicit_path.resolve() == snapshot_path.resolve():
+            candidates.append(
+                (explicit_path, "bundled_simulation", "模拟增长实验聚合快照")
+            )
+        else:
+            candidates.append((explicit_path, "custom_simulation", "自定义模拟实验聚合导出"))
+    else:
+        candidates.append(
+            (
+                DEFAULT_EXPERIMENT_EXPORT_DIRECTORY,
+                "full_simulation",
+                "本地模拟增长实验聚合结果",
+            )
+        )
+        candidates.append(
+            (
+                bundled_experiment_directory(),
+                "bundled_simulation",
+                "模拟增长实验聚合快照",
+            )
+        )
+
+    problems: list[str] = []
+    for directory, mode, label in candidates:
+        missing = [
+            name for name in EXPERIMENT_TABLE_FILES.values() if not (directory / name).is_file()
+        ]
+        if missing:
+            problems.append(f"{directory}: missing {', '.join(missing[:3])}")
+            continue
+        manifest = _load_manifest(directory)
+        if manifest.get("data_origin") != "synthetic":
+            problems.append(f"{directory}: data_origin must be 'synthetic'")
+            continue
+        if manifest.get("contains_real_retailrocket_data") is not False:
+            problems.append(f"{directory}: real-data isolation flag must be false")
+            continue
+        return DashboardSource(directory, mode, label, manifest)
+
+    details = "; ".join(problems)
+    raise DashboardDataError(f"No valid synthetic experiment export found. {details}")
+
+
+def load_experiment_tables(source: DashboardSource) -> dict[str, pd.DataFrame]:
+    """Load aggregate simulated tables and enforce their separate origin contract."""
+
+    tables: dict[str, pd.DataFrame] = {}
+    for table_name, filename in EXPERIMENT_TABLE_FILES.items():
+        frame = pd.read_csv(source.directory / filename)
+        _validate_experiment_frame(table_name, frame)
+        if table_name == "channel_daily_metrics":
+            frame["activity_date"] = pd.to_datetime(
+                frame["activity_date"], errors="raise"
+            ).dt.date
         tables[table_name] = frame
     return tables
 
@@ -199,4 +284,24 @@ def _validate_frame(table_name: str, frame: pd.DataFrame) -> None:
     if origins != {"real"}:
         raise DashboardDataError(
             f"Dashboard table {table_name!r} must contain only real data; found {origins}"
+        )
+
+
+def _validate_experiment_frame(table_name: str, frame: pd.DataFrame) -> None:
+    if frame.empty:
+        raise DashboardDataError(f"Experiment table {table_name!r} is empty")
+    forbidden = FORBIDDEN_DETAIL_COLUMNS.union({"participant_id", "order_id"}).intersection(
+        frame.columns
+    )
+    if forbidden:
+        names = ", ".join(sorted(forbidden))
+        raise DashboardDataError(
+            f"Experiment table {table_name!r} exposes row-level identifiers: {names}"
+        )
+    if "data_origin" not in frame.columns:
+        raise DashboardDataError(f"Experiment table {table_name!r} lacks data_origin")
+    origins = set(frame["data_origin"].dropna().astype(str))
+    if origins != {"synthetic"}:
+        raise DashboardDataError(
+            f"Experiment table {table_name!r} must contain only synthetic data; found {origins}"
         )

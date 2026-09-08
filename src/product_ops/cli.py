@@ -11,7 +11,7 @@ from typing import Any, TextIO
 from product_ops import __version__
 from product_ops.config import ConfigError, ProjectConfig, load_project_config
 
-COMMANDS = ("ingest", "build", "metrics", "validate", "export", "run-all")
+COMMANDS = ("ingest", "build", "metrics", "validate", "export", "run-all", "experiment")
 
 _COMMAND_HELP = {
     "ingest": "Import all four Retailrocket CSV files into explicit raw tables.",
@@ -20,6 +20,7 @@ _COMMAND_HELP = {
     "validate": "Run data-contract and warehouse quality checks.",
     "export": "Export privacy-safe aggregate metric tables and a summary.",
     "run-all": "Run ingest, build, metrics, validate, and export in order.",
+    "experiment": "Generate and analyze isolated synthetic channel and A/B scenarios.",
 }
 
 IMPLEMENTED_COMMANDS = COMMANDS
@@ -31,8 +32,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="product-ops",
         description=(
-            "Retailrocket user-growth analytics. Goal 3 builds a full DuckDB "
-            "warehouse, calculates operations metrics, and exports aggregate results."
+            "Retailrocket user-growth analytics plus an isolated synthetic growth "
+            "experiment. SQL calculates governed metrics and Python validates results."
         ),
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -107,6 +108,7 @@ def main(
 def _run_warehouse_command(command: str, config: ProjectConfig) -> dict[str, Any]:
     """Import warehouse dependencies only when an implemented command runs."""
 
+    from product_ops.experiments import run_experiments
     from product_ops.metrics import calculate_metrics, export_metrics
     from product_ops.warehouse import build, ingest, run_all, validate
 
@@ -117,6 +119,7 @@ def _run_warehouse_command(command: str, config: ProjectConfig) -> dict[str, Any
         "validate": validate,
         "export": export_metrics,
         "run-all": run_all,
+        "experiment": run_experiments,
     }
     return functions[command](config)
 

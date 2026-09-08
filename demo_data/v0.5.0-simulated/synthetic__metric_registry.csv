@@ -1,0 +1,9 @@
+metric_id,metric_name_cn,formula,grain,data_origin
+assignment_cvr,分组用户转化率,converted / assigned,experiment_arm,synthetic
+cac,获客成本,spend / conversions,channel_day,synthetic
+click_cvr,点击后转化率,conversions / clicks,channel_day,synthetic
+ctr,点击率,clicks / impressions,channel_day,synthetic
+refund_rate,退款率护栏,refunded / converted,experiment_arm,synthetic
+roas,广告支出回报,simulated_revenue / spend,channel_day,synthetic
+simulated_aov,模拟客单价,simulated_revenue / conversions,channel_day,synthetic
+simulated_gmv,模拟成交金额,sum(order_amount),channel_day,synthetic

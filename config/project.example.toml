@@ -28,6 +28,6 @@ item_properties_part2 = "item_properties_part2.csv"
 category_tree = "category_tree.csv"
 
 [warehouse]
-schemas = ["meta", "raw", "stg", "core", "mart"]
+schemas = ["meta", "raw", "stg", "core", "mart", "synthetic"]
 threads = 4
 memory_limit = "4GB"

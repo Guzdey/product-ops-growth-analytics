@@ -1,0 +1,5 @@
+scenario_id,experiment_group,assigned_users,exposed_users,clicked_users,converted_users,refunded_users,simulated_gmv,simulated_orders,assignment_cvr,ctr,click_cvr,simulated_aov,refund_rate,seed,data_origin
+no_effect,control,10000,10000,2500,800,40,85203.85,800,0.08,0.25,0.32,106.50481250000001,0.05,20260809,synthetic
+no_effect,variant,10000,10000,2500,800,40,85246.03,800,0.08,0.25,0.32,106.5575375,0.05,20260809,synthetic
+positive_effect,control,10000,10000,2500,800,40,85035.54,800,0.08,0.25,0.32,106.29442499999999,0.05,20260809,synthetic
+positive_effect,variant,10000,10000,2700,920,46,99732.06,920,0.092,0.27,0.34074074074074073,108.40441304347826,0.05,20260809,synthetic

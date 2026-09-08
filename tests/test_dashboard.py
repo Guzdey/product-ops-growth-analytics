@@ -8,15 +8,19 @@ from pathlib import Path
 import pytest
 
 from product_ops.dashboard import (
+    EXPERIMENT_TABLE_FILES,
     FORBIDDEN_DETAIL_COLUMNS,
     TABLE_FILES,
     DashboardDataError,
+    bundled_experiment_directory,
     bundled_snapshot_directory,
     filter_date_range,
     hypothesis_row,
     load_dashboard_tables,
+    load_experiment_tables,
     metric_row,
     resolve_dashboard_source,
+    resolve_experiment_source,
 )
 
 
@@ -94,3 +98,38 @@ def test_public_snapshot_stays_small() -> None:
 def test_invalid_explicit_dashboard_source_does_not_silently_fallback(tmp_path) -> None:
     with pytest.raises(DashboardDataError, match="No valid dashboard aggregate export"):
         resolve_dashboard_source(tmp_path / "missing-export")
+
+
+def test_bundled_experiment_snapshot_is_synthetic_and_aggregate_only() -> None:
+    source = resolve_experiment_source(bundled_experiment_directory())
+    tables = load_experiment_tables(source)
+
+    assert source.manifest["data_origin"] == "synthetic"
+    assert source.manifest["contains_real_retailrocket_data"] is False
+    assert source.manifest["contains_visitor_level_exports"] is False
+    assert set(tables) == set(EXPERIMENT_TABLE_FILES)
+    for frame in tables.values():
+        assert set(frame["data_origin"]) == {"synthetic"}
+        assert not {"visitorid", "participant_id", "order_id"}.intersection(frame.columns)
+
+
+def test_experiment_snapshot_contains_null_and_positive_effects() -> None:
+    source = resolve_experiment_source(bundled_experiment_directory())
+    results = load_experiment_tables(source)["experiment_results"].set_index("scenario_id")
+
+    assert results.loc["no_effect", "absolute_lift"] == pytest.approx(0)
+    assert not bool(results.loc["no_effect", "is_statistically_significant"])
+    assert results.loc["positive_effect", "absolute_lift"] == pytest.approx(0.012)
+    assert bool(results.loc["positive_effect", "is_statistically_significant"])
+
+
+def test_experiment_snapshot_manifest_matches_every_file() -> None:
+    source = resolve_experiment_source(bundled_experiment_directory())
+    manifest_files = source.manifest["files"]
+
+    assert len(manifest_files) == len(EXPERIMENT_TABLE_FILES)
+    for item in manifest_files:
+        path = source.directory / item["path"]
+        assert b"\r\n" not in path.read_bytes()
+        assert path.stat().st_size == item["bytes"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]

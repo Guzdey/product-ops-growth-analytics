@@ -1,0 +1,63 @@
+{
+  "milestone": "v0.5.0",
+  "data_origin": "synthetic",
+  "snapshot_kind": "public_simulated_aggregate_snapshot",
+  "seed": 20260809,
+  "contains_visitor_level_exports": false,
+  "contains_real_retailrocket_data": false,
+  "files": [
+    {
+      "table": "metric_registry",
+      "path": "synthetic__metric_registry.csv",
+      "rows": 8,
+      "bytes": 625,
+      "sha256": "0bc42c93cdb05d6b71a8365a34859e23eb662fb7fb7abb28d78b9ade243695e1",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "experiment_arm_metrics",
+      "path": "synthetic__experiment_arm_metrics.csv",
+      "rows": 4,
+      "bytes": 679,
+      "sha256": "ca579e7af72bc6ccabbe539a671936e3ec9491e512cfca85f382f22fd036736a",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "experiment_results",
+      "path": "synthetic__experiment_results.csv",
+      "rows": 2,
+      "bytes": 760,
+      "sha256": "2b3c47656ae466b7a2bd38c28dd14dcc0eaca9fdcdc705711bfb670a79a39ac8",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "channel_daily_metrics",
+      "path": "synthetic__channel_daily_metrics.csv",
+      "rows": 448,
+      "bytes": 72278,
+      "sha256": "b492756380ea28cbd288f1bd4c8d1c205f989b768f0a242e222c3a284d724a92",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "channel_summary",
+      "path": "synthetic__channel_summary.csv",
+      "rows": 8,
+      "bytes": 1456,
+      "sha256": "4bee02de91579f1b9fd7bc2ccc23c434116663b88585e600e325e1c66da68d4b",
+      "selection": "all aggregate rows"
+    },
+    {
+      "table": "guardrail_summary",
+      "path": "synthetic__guardrail_summary.csv",
+      "rows": 4,
+      "bytes": 342,
+      "sha256": "c8cf042f134875978df5755d079866b4235cb43b9dc3db641d1589c36a9f0bf1",
+      "selection": "all aggregate rows"
+    }
+  ],
+  "limitations": [
+    "All channel, amount, and experiment fields are simulated.",
+    "The results demonstrate analysis methods and are not observed business impact.",
+    "Only aggregate relations are exported; participant assignments remain local."
+  ]
+}

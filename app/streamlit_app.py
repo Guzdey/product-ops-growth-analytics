@@ -1,4 +1,4 @@
-"""Six-page Streamlit dashboard for the Retailrocket operations portfolio."""
+"""Seven-page real-data dashboard plus an isolated simulated experiment page."""
 
 from __future__ import annotations
 
@@ -13,8 +13,10 @@ from product_ops.dashboard import (
     filter_date_range,
     hypothesis_row,
     load_dashboard_tables,
+    load_experiment_tables,
     metric_row,
     resolve_dashboard_source,
+    resolve_experiment_source,
 )
 
 COLORS = {
@@ -33,6 +35,7 @@ PAGE_OPTIONS = (
     "04 留存与生命周期",
     "05 商品与品类",
     "06 数据质量",
+    "07 模拟增长实验 / SIMULATED",
 )
 
 
@@ -84,6 +87,25 @@ def main(streamlit_module: Any | None = None) -> int:
             return load_dashboard_tables(snapshot)
 
         tables = load_cached(str(source.directory), source.mode, source.label)
+        experiment_source = resolve_experiment_source()
+
+        @st.cache_data(show_spinner="正在读取模拟实验聚合指标……")
+        def load_experiment_cached(
+            directory: str, mode: str, label: str
+        ) -> dict[str, pd.DataFrame]:
+            snapshot = DashboardSource(
+                directory=Path(directory),
+                mode=mode,
+                label=label,
+                manifest=experiment_source.manifest,
+            )
+            return load_experiment_tables(snapshot)
+
+        experiment_tables = load_experiment_cached(
+            str(experiment_source.directory),
+            experiment_source.mode,
+            experiment_source.label,
+        )
     except (DashboardDataError, OSError, ValueError) as exc:
         st.error(f"看板数据校验失败：{exc}")
         st.stop()
@@ -129,6 +151,7 @@ def main(streamlit_module: Any | None = None) -> int:
         PAGE_OPTIONS[3]: _render_retention,
         PAGE_OPTIONS[4]: _render_category,
         PAGE_OPTIONS[5]: _render_quality,
+        PAGE_OPTIONS[6]: _render_experiment,
     }
     renderers[page](
         st,
@@ -138,6 +161,8 @@ def main(streamlit_module: Any | None = None) -> int:
         pd_module=pd,
         px_module=px,
         go_module=go,
+        experiment_tables=experiment_tables,
+        experiment_source=experiment_source,
     )
     return 0
 
@@ -856,6 +881,177 @@ def _render_quality(
         now_what="发现异常时回到 stg/core 层定位，不静默删除原始记录，也不弱化质量门禁。",
         verify="固定行数、幂等性、会话边界、交易去重和属性时点测试，并保留每次运行证据。",
     )
+
+
+def _render_experiment(
+    st: Any,
+    tables: dict[str, Any],
+    start_date: date,
+    end_date: date,
+    *,
+    experiment_tables: dict[str, Any],
+    experiment_source: DashboardSource,
+    px_module: Any,
+    go_module: Any,
+    **_: Any,
+) -> None:
+    del tables, start_date, end_date, go_module
+    st.header("07 模拟增长实验 / SIMULATED")
+    st.warning(
+        "本页全部渠道、成本、金额、实验分组和结果均为模拟数据 / SIMULATED。"
+        "它只用于展示投放分析与 A/B 实验方法，不是 Retailrocket 的真实业务成果。"
+    )
+    st.caption(
+        f"数据源：{experiment_source.label}｜固定随机种子："
+        f"{experiment_source.manifest['seed']}｜与真实数据页面完全隔离"
+    )
+
+    scenario_labels = {
+        "no_effect": "无效果场景",
+        "positive_effect": "正向效果场景",
+    }
+    scenario = st.selectbox(
+        "选择预登记场景",
+        tuple(scenario_labels),
+        format_func=lambda value: scenario_labels[value],
+    )
+    result = experiment_tables["experiment_results"].loc[
+        experiment_tables["experiment_results"]["scenario_id"] == scenario
+    ].iloc[0]
+    arms = experiment_tables["experiment_arm_metrics"].loc[
+        experiment_tables["experiment_arm_metrics"]["scenario_id"] == scenario
+    ].sort_values("experiment_group")
+    control = arms.loc[arms["experiment_group"] == "control"].iloc[0]
+    variant = arms.loc[arms["experiment_group"] == "variant"].iloc[0]
+
+    columns = st.columns(5)
+    columns[0].metric("对照组转化率", _pct(control["assignment_cvr"], 2))
+    columns[1].metric("实验组转化率", _pct(variant["assignment_cvr"], 2))
+    columns[2].metric("绝对提升", _pp(result["absolute_lift"], 2))
+    columns[3].metric("相对提升", _pct(result["relative_lift"], 1))
+    columns[4].metric("双侧 p 值", f"{float(result['p_value']):.4f}")
+
+    interval_text = (
+        f"[{_pp(result['confidence_low'], 2)}, {_pp(result['confidence_high'], 2)}]"
+    )
+    if bool(result["is_statistically_significant"]):
+        st.success(
+            f"95% 置信区间：{interval_text}；统计显著，但仍需同时检查效应大小、"
+            "样本门槛和退款率护栏。"
+        )
+    else:
+        st.info(
+            f"95% 置信区间：{interval_text}；区间包含 0，当前证据不足以证明实验组更好。"
+        )
+
+    arm_chart = arms.copy()
+    arm_chart["实验组"] = arm_chart["experiment_group"].map(
+        {"control": "对照组", "variant": "实验组"}
+    )
+    arm_chart["分组用户转化率"] = arm_chart["assignment_cvr"]
+    figure = px_module.bar(
+        arm_chart,
+        x="实验组",
+        y="分组用户转化率",
+        color="实验组",
+        text_auto=".2%",
+        title="主指标：按分组用户计算的转化率",
+        color_discrete_map={"对照组": COLORS["slate"], "实验组": COLORS["blue"]},
+    )
+    _finish_figure(figure, x_title=None, y_title="转化率", show_legend=False)
+    figure.update_yaxes(tickformat=".1%")
+    st.plotly_chart(figure, use_container_width=True)
+
+    st.subheader("渠道效率（模拟数据）")
+    channel = experiment_tables["channel_summary"].loc[
+        experiment_tables["channel_summary"]["scenario_id"] == scenario
+    ].copy()
+    channel["渠道"] = channel["channel"].map(
+        {
+            "paid_search": "付费搜索",
+            "paid_social": "付费社交",
+            "affiliate": "联盟渠道",
+            "display": "展示广告",
+        }
+    )
+    channel_chart = px_module.scatter(
+        channel,
+        x="cac",
+        y="roas",
+        size="conversions",
+        color="渠道",
+        hover_data={"ctr": ":.2%", "click_cvr": ":.2%", "simulated_gmv": ":.2f"},
+        title="渠道 CAC 与 ROAS（气泡大小为模拟转化数）",
+    )
+    _finish_figure(channel_chart, x_title="模拟 CAC", y_title="模拟 ROAS")
+    st.plotly_chart(channel_chart, use_container_width=True)
+    st.dataframe(
+        channel[
+            [
+                "渠道",
+                "spend",
+                "impressions",
+                "clicks",
+                "conversions",
+                "ctr",
+                "click_cvr",
+                "cac",
+                "roas",
+                "simulated_gmv",
+                "simulated_aov",
+            ]
+        ].rename(
+            columns={
+                "spend": "模拟成本",
+                "impressions": "曝光",
+                "clicks": "点击",
+                "conversions": "转化",
+                "ctr": "CTR",
+                "click_cvr": "点击后 CVR",
+                "cac": "CAC",
+                "roas": "ROAS",
+                "simulated_gmv": "模拟 GMV",
+                "simulated_aov": "模拟 AOV",
+            }
+        ),
+        hide_index=True,
+        use_container_width=True,
+    )
+
+    decision_cn = (
+        "可作为小流量逐步放量候选"
+        if result["decision"] == "candidate_for_gradual_rollout"
+        else "不应依据当前证据上线"
+    )
+    _story_block(
+        st,
+        "实验决策闭环",
+        what=(
+            f"实验组相对对照组变化 {_pp(result['absolute_lift'], 2)}，"
+            f"p={float(result['p_value']):.4f}。"
+        ),
+        so_what=f"综合效应、区间和样本门槛后的判断：{decision_cn}。",
+        now_what=(
+            "若进入放量，采用 10%→30%→50% 的分阶段策略；无显著效果场景则停止，"
+            "回到用户洞察和方案设计。"
+        ),
+        verify=(
+            "继续监控分组用户转化率；退款率相对对照组最多上升 1 个百分点，"
+            "并检查 SRM、埋点缺失和跨组污染。"
+        ),
+    )
+
+    with st.expander("口径、样本与结论限制"):
+        st.markdown(
+            f"""
+- 主指标：`converted_users / assigned_users`，采用意向处理口径。
+- 每组样本：{int(result['observed_min_sample_per_arm']):,}；预登记最低样本：
+  {int(result['required_sample_per_arm']):,}；显著性水平：{float(result['alpha']):.0%}。
+- 统计方法：双侧双样本比例 z 检验，同时报告绝对/相对提升和 95% 置信区间。
+- 护栏：退款率实验组相对对照组最多增加 1 个百分点。
+- 金额、渠道和成本均为模拟；不得与前六页真实数据共同支撑业务成果声明。
+"""
+        )
 
 
 def _story_block(
