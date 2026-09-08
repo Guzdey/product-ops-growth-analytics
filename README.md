@@ -10,8 +10,8 @@
 e-commerce behavioral data into governed metrics, user segments, operational actions, and
 testable growth hypotheses.
 
-> **当前状态：** `v0.4.0` 六页真实数据看板已通过 PR #9 合入 `main`；`v0.5.0`
-> 独立模拟渠道与 A/B 实验模块正在本地验收。GitHub 正式 Release 目前到 `v0.2.0`。
+> **当前状态：** `v0.5.0` 独立模拟渠道与 A/B 实验模块已通过 PR #10 合入 `main`，
+> 合并后的主分支 CI 已通过，正在准备版本发布。GitHub 正式 Release 目前到 `v0.2.0`。
 
 ## 项目概览
 
@@ -56,7 +56,7 @@ testable growth hypotheses.
 | 已发布 | 工程地基；全量 CSV 导入；`meta/raw/stg/core` 分层仓库；会话、交易、时态属性与分类模型 |
 | 已合入 `main` | 31 项指标注册；活跃、漏斗、留存、复购、生命周期和品类 Mart；Python 自动计算与聚合导出 |
 | 本地发布验收 | 六页 Streamlit/Plotly 看板、真实聚合快照、三条运营故事和逐页测试 |
-| 本地开发 | 独立模拟渠道与 A/B 实验：CTR、CVR、CAC、ROAS、效应量、置信区间和 p 值 |
+| 已合入 `main` | 独立模拟渠道与 A/B 实验：CTR、CVR、CAC、ROAS、效应量、置信区间和 p 值 |
 | 后续计划 | 公开部署和求职材料整理 |
 
 ## 数据与边界

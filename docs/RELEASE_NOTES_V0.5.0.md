@@ -13,4 +13,10 @@ CVR、CAC、ROAS、模拟 GMV/AOV、效应量、95% 置信区间和双样本比�
 - 无效果场景正确输出“不上线”，正向效果场景只输出“逐步放量候选”；
 - Release 不附加原始 Retailrocket 数据、DuckDB、Parquet 或模拟明细。
 
-最终 PR、CI、标签与 GitHub Release 证据将在完成发布流程后补充。
+## GitHub 证据
+
+- [PR #10](https://github.com/Guzdey/product-ops-growth-analytics/pull/10) 已 Squash 合并；
+- 合并提交：`f83e0d115d0a00a91be4ef4e3dd0490b72d67e02`；
+- [main CI Run 34221190332](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/34221190332)
+  已成功完成；
+- `v0.5.0` 标签与 GitHub Release 将在本次发布准备文档合入并通过主分支 CI 后创建。

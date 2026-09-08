@@ -4,8 +4,9 @@
 
 ## [Unreleased]
 
-`v0.3.0` 指标和 `v0.4.0` 看板已分别通过 PR #8、PR #9 合入 `main`，远程标签和 GitHub
-Release 待补。`v0.5.0` 独立模拟增长实验已完成本地实现，正在发布验收。
+`v0.3.0` 指标、`v0.4.0` 看板和 `v0.5.0` 独立模拟增长实验已分别通过 PR #8、PR #9、
+PR #10 合入 `main`。`v0.5.0` 已通过合并后的主分支 CI，正在准备标签和 GitHub Release；
+`v0.3.0`、`v0.4.0` 的远程标签和 Release 仍待补。
 
 ### Added
 
@@ -47,6 +48,10 @@ Release 待补。`v0.5.0` 独立模拟增长实验已完成本地实现，正在
 
 ### Verification
 
+- [PR #10](https://github.com/Guzdey/product-ops-growth-analytics/pull/10) 已 Squash 合并，
+  提交为 `f83e0d115d0a00a91be4ef4e3dd0490b72d67e02`；合并后的
+  [main CI Run 34221190332](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/34221190332)
+  成功完成。
 - 第五部分实际运行生成 40,000 条模拟分配；9 项质量检查全部通过，模拟 ID 与真实
   `visitorid` 重合数为 0。
 - 正向场景为 8.0%→9.2%、+1.2pp、95% CI [+0.423pp, +1.977pp]、p=0.0025；

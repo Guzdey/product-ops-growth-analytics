@@ -4,12 +4,12 @@
 
 ## 当前状态
 
-**当前里程碑：`v0.5.0` 独立模拟渠道与 A/B 实验已完成本地实现，正在执行发布验收。**
+**当前里程碑：`v0.5.0` 独立模拟渠道与 A/B 实验已合入 `main`，正在准备版本发布。**
 
 第三部分已在 `v0.2.0` 数据仓库上生成活跃、漏斗、留存、交易、复购、生命周期和品类
 指标，三项预登记假设均已如实输出。PR #8 已于 2026-09-05 Squash 合入 `main`。第四
 部分通过 PR #9 合入 `main`，形成六页 Streamlit 真实数据看板。第五部分已在独立
-`synthetic` Schema 中完成模拟渠道与 A/B 实验，本地验收通过但尚未提交。
+`synthetic` Schema 中完成模拟渠道与 A/B 实验，并通过 PR #10 合入 `main`。
 
 ## 里程碑看板
 
@@ -19,7 +19,7 @@
 | `v0.2.0` | 已发布 | [GitHub Release](https://github.com/Guzdey/product-ops-growth-analytics/releases/tag/v0.2.0)、PR #5、PR #6、受保护 `main`、绿色 CI |
 | `v0.3.0` | 待发布 | 全量指标 11 pass / 0 fail；PR #8 与 main CI 已通过，标签和 Release 待完成 |
 | `v0.4.0` | 已合入 | PR #9、六页看板、真实聚合快照、三条运营故事和绿色 main CI；Release 待补 |
-| `v0.5.0` | 本地验收 | 独立模拟 Schema、渠道指标、A/B 检验、第七页看板和专项测试已通过 |
+| `v0.5.0` | 发布准备 | PR #10、独立模拟 Schema、渠道指标、A/B 检验、第七页看板和绿色 main CI |
 | `v1.0.0` | 未开始 | 求职作品集与公开部署 |
 
 ## v0.2.0 已完成
@@ -112,7 +112,7 @@
   合并后 main CI 通过。
 - [ ] 推送本地标签并创建 GitHub Release。
 
-## v0.5.0 本地实现
+## v0.5.0 已完成（功能已合入，版本尚未发布）
 
 - [x] 固定随机种子 `20260809`，生成 40,000 条模拟实验分配；不复用真实 `visitorid`。
 - [x] 建立独立 `synthetic` Schema，真实 `raw/stg/core/mart` 不参与模拟计算。
@@ -123,16 +123,19 @@
   无效果场景为 8.0%→8.0%，p=1.0000。
 - [x] 9 项质量检查全部通过；模拟参与者 ID 与真实 ID 重合数为 0。
 - [x] 增加独立第七页看板与约 74 KiB 聚合快照，未包含参与者或订单明细。
-- [x] 第五部分专项测试、Ruff 与新增 SQLFluff 检查通过。
-- [ ] 完成全仓门禁、显式暂存、提交、推送、PR、CI、合并、标签和 Release。
+- [x] 全仓门禁通过：44 个 Pytest、Ruff、SQLFluff、依赖检查和 CLI 检查全部成功。
+- [x] [PR #10](https://github.com/Guzdey/product-ops-growth-analytics/pull/10) 已 Squash 合并，
+  合并提交为 `f83e0d115d0a00a91be4ef4e3dd0490b72d67e02`。
+- [x] 合并后的 [main CI Run 34221190332](https://github.com/Guzdey/product-ops-growth-analytics/actions/runs/34221190332)
+  已通过。
+- [ ] 创建 `v0.5.0` 标签和 GitHub Release。
 
 ## 下一步
 
-1. 运行 `v0.5.0` 全仓门禁并检查真实/模拟隔离、快照清单和变更范围。
-2. 显式暂存第五部分代码、SQL、测试、文档和聚合快照；继续排除用户私有 `.gitignore`
-   与 `.lsf` 文件。
-3. 分别授权提交、推送、Pull Request、CI 后合并、标签和 Release。
-4. 后续补齐 `v0.3.0`、`v0.4.0` 尚未完成的远程标签与 Release。
+1. 将本次发布证据文档通过短分支和 Pull Request 合入 `main`。
+2. 在最终绿色 `main` 上创建并推送 `v0.5.0` 注释标签，再创建 GitHub Release。
+3. 后续补齐 `v0.3.0`、`v0.4.0` 尚未完成的远程标签与 Release。
+4. 进入 `v1.0.0` 求职作品集整理与公开部署。
 
 ## 这一阶段需要会讲的内容
 
